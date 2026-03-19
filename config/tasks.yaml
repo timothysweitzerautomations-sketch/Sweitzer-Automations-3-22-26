@@ -1,0 +1,60 @@
+tasks:
+  - id: find_prices
+    agent_id: scraper
+    description: |
+      Use web search to find:
+      - 3 lowest current "Buy It Now" prices for {product}
+      - 3 recent "sold" prices for {product} (or closest equivalent)
+      Include source links and timestamps when possible.
+    expected_output: "Bullet list of prices with sources; separate live vs sold comps."
+
+  - id: inspect_condition
+    agent_id: inspector
+    description: |
+      From the links in the previous step (prefer eBay listing links when available):
+      - Open up to 3 candidate listing URLs
+      - Summarize condition and any red flags in each description (parts-only, no accessories, no returns, etc.)
+      Output a short "Condition Report" with:
+      - URL
+      - Condition label: Mint / Used / Risky / Parts-only
+      - Red flags (bullets)
+    expected_output: "Condition Report for up to 3 listings with red flags."
+
+  - id: compute_profit
+    agent_id: analyst
+    description: |
+      Using the found sold comps and assuming buy price = {target_price}:
+      - Estimate expected sale price (use a conservative sold comp)
+      - Calculate marketplace fee %, shipping, and net profit
+      Return the full breakdown (numbers) and the breakeven sale price.
+    expected_output: "A clear profit breakdown with assumptions and breakeven."
+
+  - id: make_decision
+    agent_id: decider
+    description: |
+      Decide BUY or PASS for {product} at {target_price}, based on the profit breakdown and comps.
+      You MUST apply these hard rules:
+      - If net_profit < {min_profit}, output PASS
+      - If roi_percent < {min_roi_percent}, output PASS
+      - Otherwise output BUY (unless you see a clear red-flag like obvious counterfeits/returns/parts-only listings)
+
+      Output must include:
+      - BUY or PASS (first line)
+      - 2-4 bullet reasons
+      - The key numbers (expected sale, fees, shipping, net profit, ROI)
+    expected_output: 'A "BUY" or "PASS" recommendation with a clear profit breakdown.'
+    output_file: "outputs/arbitrage_report.md"
+
+  - id: draft_listing
+    agent_id: drafter
+    description: |
+      Based on the research, inspection, and profit analysis above, write:
+      1) An eBay title (<= 80 characters, Title Case).
+      2) A structured description in Markdown with sections:
+         - Condition (include any flaws/red flags found)
+         - Included Items
+         - Key Features
+         - Shipping & Returns
+      Do not invent condition details. If unknown, say "Not specified".
+    expected_output: "A markdown formatted eBay listing draft."
+    output_file: "outputs/ebay_listing.md"

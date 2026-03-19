@@ -1,0 +1,14 @@
+.DS_Store
+__pycache__/
+*.pyc
+
+# Virtualenvs
+venv/
+.venv/
+
+# Local app data / caches
+.data/
+
+# Generated outputs (keep if you want; remove this line to track outputs)
+outputs/
+
