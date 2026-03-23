@@ -26,6 +26,8 @@ jobs:
         run: pytest tests/ -q
       - name: build_crew smoke test
         run: python -c "from main import build_crew; c = build_crew(); print('tasks:', len(c.tasks))"
+      - name: Linux helper scripts (syntax)
+        run: bash -n linux/run_dashboards.sh linux/serve_dashboards.sh
 
   android:
     runs-on: ubuntu-latest

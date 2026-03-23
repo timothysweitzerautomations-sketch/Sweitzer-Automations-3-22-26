@@ -19,13 +19,14 @@ This directory is the **full** project: `main.py`, `config/`, `tools/`, `revenue
 
 **Local (optional):** `bash scripts/verify_local_platforms.sh` — runs `demo_video_ready.sh` plus Android/Xcode **only if** the Android SDK and full **Xcode** (not only Command Line Tools) are installed. Windows `.exe` still needs a Windows machine or CI.
 
-**Platform dashboards (same UI as the browser):** **`windows/`** (build a `.exe` via [`windows_app/README_BUILD.md`](windows_app/README_BUILD.md)), **`android/`** (Gradle / Android Studio), **`apple/`** (Xcode — Mac, iPhone, iPad). Batch and shell helpers: [WINDOWS.md](WINDOWS.md), `scripts/windows/*.bat`.
+**Platform dashboards (same UI as the browser):** **`windows/`** (build a `.exe` via [`windows_app/README_BUILD.md`](windows_app/README_BUILD.md)), **`android/`** (Gradle / Android Studio), **`apple/`** (Xcode — Mac, iPhone, iPad), **`linux/`** ([LINUX.md](LINUX.md) — Tk launcher or browser-only server). Batch and shell helpers: [WINDOWS.md](WINDOWS.md), `scripts/windows/*.bat`.
 
 **macOS setup (optional):** from the repo root, run **`bash scripts/setup_platform_apps.sh`** — creates Desktop aliases **`Sweitzer Automations 3-22-26 - Project`** (whole repo), **`… - Windows`**, **`… - Android`**, **`… - Apple`**, regenerates shared launcher icons (`tools/generate_brand_icons.py`), and writes **`android/local.properties`** if `~/Library/Android/sdk` exists. Re-run after moving the project folder.
 
 | Where | What to open / run |
 |-------|---------------------|
 | Windows PC | `windows\BUILD.bat` or `windows_app\build_exe.bat` → `dist\SweitzerAutomations-3-22-26.exe` |
+| Linux | [LINUX.md](LINUX.md) — `./linux/run_dashboards.sh` (GUI) or `./linux/serve_dashboards.sh` (browser only) |
 | Android | `android/README.txt` — `./gradlew assembleDebug` or Android Studio |
 | Mac / iPhone / iPad | `apple/README.txt` — `SweitzerAutomations.xcodeproj` |
 
@@ -144,3 +145,4 @@ Add new files under `tests/` following the same pattern.
 - `revenue_pulse/` — `index.html`, `flip_tracker.html`, `revenue_engine.py`, `flip_engine.py`, sample CSVs
 - `tests/` — pytest suite; `requirements-dev.txt` — pytest only
 - `docs/video/` — demo recording prep, Gemini handoff text, talking-point cue cards
+- `linux/` — [LINUX.md](LINUX.md) user-friendly dashboard launchers
