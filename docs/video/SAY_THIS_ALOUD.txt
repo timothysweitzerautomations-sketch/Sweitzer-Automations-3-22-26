@@ -1,0 +1,100 @@
+================================================================================
+  SWEITZER AUTOMATIONS 3-22-26 — SAY THIS ALOUD (Videos 1, 2, 3)
+  Print or keep on a second screen. Lines starting with [DO] are actions, not spoken.
+================================================================================
+
+
+——————————————————————————————————————————————————————————————————————————————
+VIDEO 1 — REVENUE PULSE (say this for the sales dashboard video)
+——————————————————————————————————————————————————————————————————————————————
+
+This is Revenue Pulse — part of my Sweitzer Automations project, build label three-twenty-two twenty-six. I’m going to load a sales CSV and show you charts and KPIs. The Python side runs locally on my machine.
+
+[DO: browser on localhost Revenue Pulse page]
+
+I’m on localhost, serving the same HTML that lives in the repo under revenue_pulse. I’ll load sample data first.
+
+[DO: click Load sample data]
+
+Here — totals and charts should fill in. The engine is basically CSV in, aggregates out. Your data doesn’t need to go to a cloud service for that math.
+
+[DO: point at a KPI or chart]
+
+You can read whatever matters for your workflow — revenue by time, top products, whatever the screen shows.
+
+[DO: optional — Choose CSV with a safe test file]
+
+If you bring your own export, give the money column a clear name — like amount, revenue, or total — so the app can find it.
+
+That’s Revenue Pulse. Source code and setup steps are on GitHub — I’ll put the link in the description — start with README in the repo.
+
+[DO: optional end card on screen]
+Say: Full repo is Sweitzer-Automations-3-22-26 on GitHub under timothysweitzerautomations-sketch. Build three-twenty-two twenty-six.
+
+
+——————————————————————————————————————————————————————————————————————————————
+VIDEO 2 — FLIP PROFIT TRACKER (say this for the flip dashboard video)
+——————————————————————————————————————————————————————————————————————————————
+
+This is the flip profit tracker — same Sweitzer project, same local server, different page. It’s line-by-line buy and sell economics: fees, shipping, the kind of ROI thinking you’d use in a serious sheet. I’m not giving tax, legal, or investment advice — these numbers are for illustration.
+
+[DO: open flip_tracker.html on your port]
+
+Same folder as Revenue Pulse — I’m just on the flip tracker page now.
+
+[DO: Load sample flips]
+
+Sample data — you’ll see buys, some sold, some still pending. Pending rows stay in the estimate bucket until you record a sale.
+
+[DO: scroll if you show pending vs sold]
+
+When you have both an estimate and an actual on a row, you can compare variance — how close your guess was to what really happened.
+
+Again — not tax, legal, or investment advice — this is a structured workflow for your own resale math.
+
+That’s the flip side. Repo and setup are on GitHub — link in the description — README walks you through the rest.
+
+[DO: optional end card]
+Say: GitHub link in the description. Build three-twenty-two twenty-six.
+
+
+——————————————————————————————————————————————————————————————————————————————
+VIDEO 3 — REPO TOUR (say this for the Cursor / whole-project video)
+——————————————————————————————————————————————————————————————————————————————
+
+This is the Sweitzer Automations repo in Cursor — one codebase, build three-twenty-two twenty-six. I’ll walk the layout: dashboards in the browser, optional native apps, and where the AI path lives if you use CrewAI with Ollama.
+
+[DO: README.md visible]
+
+README is the map — setup, folder layout, how to run things.
+
+[DO: sidebar — revenue_pulse]
+
+revenue_pulse is the web UI — Revenue Pulse and the flip tracker — plus the Python engines that read your CSVs.
+
+[DO: config, then tools]
+
+config holds agents and tasks for the crew. tools registers things like CSV summary helpers the agents can call.
+
+[DO: tests]
+
+tests backs the CSV logic so changes don’t silently break numbers.
+
+[DO: windows, windows_app, android, apple — quick pass]
+
+The same dashboards can ship as a Windows executable, an Android app, and an Apple Xcode project — one product story, different shells. Charts may load a chart library from the web; your CSV data stays on your machine for the session.
+
+[DO: optional — main.py or config YAML briefly, only if you’ll show AI]
+
+If you turn on the AI path, main.py runs CrewAI with a local model through Ollama — so research-style steps can stay on your machine. You tune agents and tasks in YAML.
+
+Everything you saw — code, tests, build scripts — is public on GitHub. This snapshot is labeled three-twenty-two twenty-six so you know which build you’re looking at.
+
+[DO: end card — show or read URL]
+
+Say: Code and docs are at github dot com slash timothysweitzerautomations-sketch slash Sweitzer-Automations-3-22-26. Link is in the description. Read the README first.
+
+================================================================================
+  Tip: Rehearse once out loud; cut any paragraph that feels long for your pace.
+  Pair with: PRINT_VIDEO_TALKING_POINTS.txt for bullet reminders.
+================================================================================

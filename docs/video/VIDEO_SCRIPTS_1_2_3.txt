@@ -1,0 +1,158 @@
+================================================================================
+  SWEITZER AUTOMATIONS 3-22-26 — VIDEO SCRIPTS (1, 2, 3 IN ORDER)
+  Read naturally; pause where noted. Target: one clear story per video.
+================================================================================
+
+Prereq for all browser demos (say once if needed):
+  Terminal:  python3 -m http.server <PORT> --directory revenue_pulse
+  Then open the URLs below in your browser (zoom ~110% if text looks small).
+
+
+================================================================================
+VIDEO 1 — REVENUE PULSE (sales analytics)
+Target length: 3–6 minutes  |  Audience: “show my sales dashboard working”
+================================================================================
+
+HOOK (0:00–0:25)
+----------------
+“This is Revenue Pulse — part of my Sweitzer Automations project, build label
+three-dash-twenty-two-dash-twenty-six. I’ll show you how I load a sales CSV
+and get charts and KPIs locally — the Python engine runs on my machine.”
+
+SETUP (0:25–0:45)
+-----------------
+“In the browser I’m on localhost pointing at the revenue_pulse folder — same
+HTML you’d get from the repo. I’ll start with sample data, then you can swap
+in your own export as long as it has an amount-style column.”
+
+DEMO A — SAMPLE (0:45–2:00)
+---------------------------
+[Click: Load sample data]
+“Here’s load sample — you should see totals and charts populate. Nothing here
+has to hit my server for the math — it’s CSV in, aggregates out.”
+
+[Point at KPIs / chart]
+“Call out what matters for your audience — revenue by month, top products,
+whatever’s on screen.”
+
+DEMO B — YOUR CSV (optional) (2:00–3:30)
+----------------------------------------
+[Choose CSV — use a safe anonymized file if recording]
+“If you use your own file, name a column something like amount, revenue, or
+total — the app tells you if it can’t find the money column.”
+
+CLOSE (3:30–4:15)
+-----------------
+“That’s Revenue Pulse. If you want the code and setup steps, it’s all in the
+GitHub repo — link in the description — and README is the map.”
+
+END CARD (on screen or spoken)
+-------------------------------
+“GitHub: timothysweitzerautomations-sketch / Sweitzer-Automations-3-22-26”
+“Full source and README — build three-dash-twenty-two-dash-twenty-six.”
+
+
+================================================================================
+VIDEO 2 — FLIP PROFIT TRACKER (buy / sell / pending)
+Target length: 3–6 minutes  |  Audience: “show flip economics working”
+================================================================================
+
+HOOK (0:00–0:25)
+----------------
+“This is the flip profit tracker — same project, same local server, different
+page. It’s line-by-line buy and sell economics: fees, shipping, ROI-style
+thinking. I’m not giving tax or legal advice — numbers here are for illustration.”
+
+SETUP (0:25–0:40)
+-----------------
+[Open flip_tracker.html — same port as video 1, e.g. /flip_tracker.html]
+“Flip tracker is in the same revenue_pulse folder as Revenue Pulse — I’m
+just on the flip page now.”
+
+DEMO — SAMPLE (0:40–3:00)
+-------------------------
+[Load sample flips]
+“Load sample — you’ll see rows with buys, some sold, some pending. Pending
+rows stay in the estimate bucket until you close the sale.”
+
+[Scroll / highlight pending vs sold if visible]
+“When I have both an estimate and an actual on a line, I can talk variance —
+how wrong my guess was versus what really happened.”
+
+[If JSON or detail panel exists — mention briefly]
+“If you export or inspect JSON, the engine spells out the same economics the UI shows.”
+
+DISCLAIMER (once) (3:00–3:30)
+-----------------------------
+“Again — not tax, legal, or investment advice — this is a structured sheet
+for your own resale workflow.”
+
+CLOSE (3:30–4:15)
+-----------------
+“That’s the flip side. Repo and setup are on GitHub — description has the link —
+README walks you through the rest.”
+
+END CARD
+--------
+“GitHub in the description. Build three-dash-twenty-two-dash-twenty-six.”
+
+
+================================================================================
+VIDEO 3 — REPO TOUR + GITHUB + PLATFORMS (+ optional AI)
+Target length: 4–8 minutes  |  Audience: “show the whole project and where to go next”
+================================================================================
+
+HOOK (0:00–0:25)
+----------------
+“This is the Sweitzer Automations repo in Cursor — one codebase, build label
+three-dash-twenty-two-dash-twenty-six. I’ll show you how it’s laid out: Python
+dashboards, optional native wrappers, and where the AI path lives if you wire CrewAI and Ollama.”
+
+PART A — CURSOR TOUR (0:25–2:30)
+--------------------------------
+[README.md open briefly]
+“README is the first stop — setup, layout, and where the CSV engines live.”
+
+[Sidebar: revenue_pulse/]
+“revenue_pulse is the browser UI — Revenue Pulse and flip tracker — plus the
+stdlib engines that power the CSV logic.”
+
+[config/ and tools/]
+“config agents and tasks; tools register things like CSV summaries for the crew.”
+
+[tests/]
+“The tests folder backs the CSV engines — so changes don’t silently break the math.”
+
+PART B — PLATFORM WRAPPERS (2:30–3:45)
+--------------------------------
+[windows/, windows_app/, android/, apple/ — click through, don’t deep-read every file]
+“Same HTML dashboards can ship as a Windows exe, Android APK, and Apple Xcode
+project — one product story, different shells. Charting may use a CDN; your
+CSV data stays local to the session or device.”
+
+PART C — OPTIONAL AI (3:45–5:00)  [skip if Ollama isn’t running]
+----------------
+“If I turn on the AI path, main.py runs CrewAI with a local model via Ollama
+— agents can pull comps and call tools that summarize your CSVs. That stays
+on your machine if you set it up that way.”
+
+[Optional: show main.py or config/agents.yaml for 10 seconds]
+“Agents and tasks live in YAML — you tune them for your workflow.”
+
+CLOSE (5:00–5:45)
+-----------------
+“Everything you saw — source code, tests, build scripts — is on GitHub. README
+is the map; this snapshot is named three-dash-twenty-two-dash-twenty-six so
+you know which build you’re looking at.”
+
+END CARD (SHOW ON SCREEN)
+--------------------------
+https://github.com/timothysweitzerautomations-sketch/Sweitzer-Automations-3-22-26
+“Code and docs: GitHub — link in the description.”
+
+================================================================================
+  NOTES
+  - Trim any section if a video runs long; keep one hook per video.
+  - Record 1–3 on separate days if you want; order is 1 → 2 → 3 for viewers.
+  - File: docs/video/VIDEO_SCRIPTS_1_2_3.txt
+================================================================================
