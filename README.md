@@ -124,6 +124,12 @@ Add new files under `tests/` following the same pattern.
 
 **Release check:** `bash scripts/demo_video_ready.sh` (Ollama + pytest + `build_crew`).
 
+**Keep checks handy (Cursor / VS Code):** **Terminal → Run Task…** (or **⌘⇧B** / **Ctrl+Shift+B** for the default build task) → **Local checks: demo_video_ready**. Other tasks: **Pytest only**, **Serve Revenue Pulse (8080)** — see [`.vscode/tasks.json`](.vscode/tasks.json).
+
+**Optional — shell alias** (add to `~/.zshrc`, then `source ~/.zshrc`):
+
+`alias sweitzer-check='cd "/Users/timothysweitzer/Sweitzer Automations 3-22-26" && bash scripts/demo_video_ready.sh'`
+
 ## Research / notes
 
 [`research/`](research/) — scratch notes and interview scripts; not required to run the app.
