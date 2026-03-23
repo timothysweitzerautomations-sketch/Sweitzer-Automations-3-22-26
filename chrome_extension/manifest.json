@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Sweitzer Automations 3-22-26",
+  "version": "1.0.0",
+  "description": "Open Revenue Pulse and Flip tracker in Chrome (local server must be running).",
+  "action": {
+    "default_title": "Sweitzer Automations",
+    "default_popup": "popup.html"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "permissions": ["storage", "tabs"],
+  "host_permissions": [
+    "http://127.0.0.1/*",
+    "http://localhost/*"
+  ]
+}

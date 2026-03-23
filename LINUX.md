@@ -85,6 +85,12 @@ The HTML dashboards load **Chart.js** from a public CDN. Your CSV data stays loc
 
 ---
 
+## Chrome companion extension
+
+After `serve_dashboards.sh` (or any local `http.server`) is running, you can use the **Chrome toolbar extension** in **`chrome_extension/`** to open the same URLs in one click. See **[CHROME.md](CHROME.md)**.
+
+---
+
 ## Troubleshooting
 
 | Issue | What to try |

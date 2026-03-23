@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sweitzer Automations — Extension settings</title>
+    <style>
+      body {
+        font-family: system-ui, Segoe UI, Roboto, sans-serif;
+        max-width: 520px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        color: #111;
+      }
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.35rem;
+      }
+      input[type="number"] {
+        width: 120px;
+        padding: 0.5rem;
+        font-size: 1rem;
+      }
+      p.hint {
+        color: #555;
+        font-size: 0.9rem;
+        margin-top: 0.35rem;
+      }
+      button {
+        margin-top: 1rem;
+        padding: 0.5rem 1rem;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      #status {
+        margin-top: 0.75rem;
+        color: #15803d;
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Sweitzer Automations extension</h1>
+    <p>Port for your local dashboard server (must match <code>python3 -m http.server PORT</code> or <code>linux/serve_dashboards.sh</code>).</p>
+    <form id="form">
+      <label for="port">Port</label>
+      <input type="number" id="port" name="port" min="1024" max="65535" value="8765" />
+      <p class="hint">Default <strong>8765</strong>. Example: <code>http://127.0.0.1:8765/</code></p>
+      <button type="submit">Save</button>
+    </form>
+    <p id="status"></p>
+    <script src="options.js"></script>
+  </body>
+</html>

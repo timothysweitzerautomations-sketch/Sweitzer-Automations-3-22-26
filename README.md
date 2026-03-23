@@ -16,10 +16,11 @@ This directory is the **full** project: `main.py`, `config/`, `tools/`, `revenue
 | **android** | `./gradlew assembleDebug` (Ubuntu + Android SDK) |
 | **xcode** | `xcodebuild` for macOS (`CODE_SIGNING_ALLOWED=NO`) |
 | **windows_exe** | PyInstaller → `SweitzerAutomations-3-22-26.exe` |
+| **chrome_extension** | Unpacked MV3 companion — [CHROME.md](CHROME.md) (opens local dashboard URLs) |
 
 **Local (optional):** `bash scripts/verify_local_platforms.sh` — runs `demo_video_ready.sh` plus Android/Xcode **only if** the Android SDK and full **Xcode** (not only Command Line Tools) are installed. Windows `.exe` still needs a Windows machine or CI.
 
-**Platform dashboards (same UI as the browser):** **`windows/`** (build a `.exe` via [`windows_app/README_BUILD.md`](windows_app/README_BUILD.md)), **`android/`** (Gradle / Android Studio), **`apple/`** (Xcode — Mac, iPhone, iPad), **`linux/`** ([LINUX.md](LINUX.md) — Tk launcher or browser-only server). Batch and shell helpers: [WINDOWS.md](WINDOWS.md), `scripts/windows/*.bat`.
+**Platform dashboards (same UI as the browser):** **`windows/`** (build a `.exe` via [`windows_app/README_BUILD.md`](windows_app/README_BUILD.md)), **`android/`** (Gradle / Android Studio), **`apple/`** (Xcode — Mac, iPhone, iPad), **`linux/`** ([LINUX.md](LINUX.md) — Tk launcher or browser-only server), **`chrome_extension/`** ([CHROME.md](CHROME.md) — Chrome toolbar companion to local server). Batch and shell helpers: [WINDOWS.md](WINDOWS.md), `scripts/windows/*.bat`.
 
 **macOS setup (optional):** from the repo root, run **`bash scripts/setup_platform_apps.sh`** — creates Desktop aliases **`Sweitzer Automations 3-22-26 - Project`** (whole repo), **`… - Windows`**, **`… - Android`**, **`… - Apple`**, regenerates shared launcher icons (`tools/generate_brand_icons.py`), and writes **`android/local.properties`** if `~/Library/Android/sdk` exists. Re-run after moving the project folder.
 
@@ -27,6 +28,7 @@ This directory is the **full** project: `main.py`, `config/`, `tools/`, `revenue
 |-------|---------------------|
 | Windows PC | `windows\BUILD.bat` or `windows_app\build_exe.bat` → `dist\SweitzerAutomations-3-22-26.exe` |
 | Linux | [LINUX.md](LINUX.md) — `./linux/run_dashboards.sh` (GUI) or `./linux/serve_dashboards.sh` (browser only) |
+| Chrome | [CHROME.md](CHROME.md) — load unpacked `chrome_extension/`; local server must be running |
 | Android | `android/README.txt` — `./gradlew assembleDebug` or Android Studio |
 | Mac / iPhone / iPad | `apple/README.txt` — `SweitzerAutomations.xcodeproj` |
 
@@ -146,3 +148,4 @@ Add new files under `tests/` following the same pattern.
 - `tests/` — pytest suite; `requirements-dev.txt` — pytest only
 - `docs/video/` — demo recording prep, Gemini handoff text, talking-point cue cards
 - `linux/` — [LINUX.md](LINUX.md) user-friendly dashboard launchers
+- `chrome_extension/` — [CHROME.md](CHROME.md) Chrome toolbar companion (localhost)
