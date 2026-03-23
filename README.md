@@ -4,6 +4,8 @@
 
 `/Users/timothysweitzer/Sweitzer Automations 3-22-26`
 
+**GitHub (public source of truth):** [github.com/timothysweitzerautomations-sketch/Sweitzer-Automations-3-22-26](https://github.com/timothysweitzerautomations-sketch/Sweitzer-Automations-3-22-26)
+
 This directory is the **full** project: `main.py`, `config/`, `tools/`, `revenue_pulse/`, and git history.
 
 **CI (GitHub Actions):** on push/PR to `main` or `master`, [`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs:

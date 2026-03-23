@@ -39,8 +39,16 @@ CREWAI + OLLAMA (OPTIONAL SEGMENT)
 
 CLOSE
 -----
-• Point to README, tests/, and where to build each platform.
+• Point to README.md in the repo and the GitHub URL (source of truth):
+  https://github.com/timothysweitzerautomations-sketch/Sweitzer-Automations-3-22-26
+• Mention tests/ and where to build each platform (Windows / Android / Apple) if relevant.
 • Repeat short disclaimer if you showed money or profit numbers.
+
+
+SHOW / SELL (END CARD)
+----------------------
+• “Code and docs live on GitHub — link in the description.”
+• “README in the repo is the map; everything else is in the repo.”
 
 
 ================================================================================
