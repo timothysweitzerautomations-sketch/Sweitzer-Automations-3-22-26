@@ -7,6 +7,11 @@ on:
     branches: [main, master]
   workflow_dispatch:
 
+# GitHub is moving Actions’ JS runtime from Node 20 → 24 (see changelog). Opt in so
+# checkout/setup-* actions run on Node 24 and deprecation annotations stay quiet.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
