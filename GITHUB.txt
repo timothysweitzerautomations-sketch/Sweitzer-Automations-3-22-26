@@ -1,0 +1,6 @@
+Sweitzer Automations 3-22-26 — GitHub (source of truth)
+=======================================================
+
+https://github.com/timothysweitzerautomations-sketch/Sweitzer-Automations-3-22-26
+
+README.md in this repo is the setup map. CI runs on push (see .github/workflows).
