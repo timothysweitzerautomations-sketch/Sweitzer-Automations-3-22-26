@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Revenue Pulse — Sales analytics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
+    <style>
+      :root {
+        --bg: #0c1117;
+        --panel: #151c24;
+        --border: #243044;
+        --text: #e8edf5;
+        --muted: #8b9bb5;
+        --accent: #3b82f6;
+        --good: #22c55e;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
+          Arial, sans-serif;
+        background: radial-gradient(1200px 600px at 20% -10%, #1a2740 0%, var(--bg) 55%);
+        color: var(--text);
+        min-height: 100vh;
+      }
+      .wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 2rem 1.25rem 4rem;
+      }
+      h1 {
+        font-size: 1.75rem;
+        font-weight: 650;
+        letter-spacing: -0.02em;
+        margin: 0 0 0.35rem;
+      }
+      .sub {
+        color: var(--muted);
+        margin: 0 0 1.75rem;
+        max-width: 52ch;
+        line-height: 1.5;
+      }
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.25rem 1.35rem;
+        margin-bottom: 1rem;
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        align-items: center;
+      }
+      label.btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--accent);
+        color: #fff;
+        padding: 0.55rem 1rem;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+      }
+      label.btn:hover {
+        filter: brightness(1.06);
+      }
+      input[type="file"] {
+        display: none;
+      }
+      button.ghost {
+        background: transparent;
+        color: var(--text);
+        border: 1px solid var(--border);
+        padding: 0.5rem 0.85rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      button.ghost:hover {
+        border-color: var(--muted);
+      }
+      .kpis {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 0.75rem;
+        margin-top: 1rem;
+      }
+      .kpi {
+        background: #0e141c;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 1rem;
+      }
+      .kpi span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 0.35rem;
+      }
+      .kpi strong {
+        font-size: 1.45rem;
+        font-weight: 700;
+      }
+      .hint {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-top: 0.75rem;
+      }
+      .err {
+        color: #f87171;
+        margin-top: 0.75rem;
+        font-size: 0.9rem;
+      }
+      canvas {
+        max-height: 320px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 0.55rem 0.4rem;
+        border-bottom: 1px solid var(--border);
+      }
+      th {
+        color: var(--muted);
+        font-weight: 600;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .cols {
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+      .hidden {
+        display: none !important;
+      }
+      .nav a {
+        color: var(--accent);
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .nav a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <p class="nav"><a href="flip_tracker.html">Flip profit tracker →</a> (buy, sale, fees, shipping, ROI)</p>
+      <h1>Revenue Pulse</h1>
+      <p class="sub">
+        Upload a sales export (CSV). We detect date, amount, product, and customer columns,
+        then summarize revenue and trends so you do not have to comb spreadsheets by hand.
+        <span style="display: block; margin-top: 0.5rem; font-size: 0.9rem"
+          >Sweitzer Automations — Revenue Pulse</span
+        >
+      </p>
+
+      <div class="panel">
+        <div class="row">
+          <label class="btn">
+            <input id="file" type="file" accept=".csv,text/csv" />
+            Choose CSV
+          </label>
+          <button type="button" class="ghost" id="loadSample">Load sample data</button>
+        </div>
+        <p class="hint">
+          Expected: a header row plus columns such as <code>date</code>, <code>amount</code> /
+          <code>revenue</code>, and optionally <code>product</code>, <code>customer</code>.
+        </p>
+        <div id="err" class="err hidden"></div>
+      </div>
+
+      <div id="out" class="hidden">
+        <div class="kpis">
+          <div class="kpi"><span>Total revenue</span><strong id="kpiTotal">—</strong></div>
+          <div class="kpi"><span>Transactions</span><strong id="kpiCount">—</strong></div>
+          <div class="kpi"><span>Average order value</span><strong id="kpiAov">—</strong></div>
+        </div>
+        <p class="cols" id="detected"></p>
+
+        <div class="panel" style="margin-top: 1rem">
+          <h2 style="margin: 0 0 0.75rem; font-size: 1.05rem">Revenue by month</h2>
+          <canvas id="chart" height="120"></canvas>
+        </div>
+
+        <div class="panel">
+          <h2 style="margin: 0 0 0.75rem; font-size: 1.05rem">Top products</h2>
+          <div id="tblProducts"></div>
+        </div>
+
+        <div class="panel">
+          <h2 style="margin: 0 0 0.75rem; font-size: 1.05rem">Top customers</h2>
+          <div id="tblCustomers"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const AMOUNT = new Set([
+        "amount",
+        "revenue",
+        "total",
+        "sale",
+        "sales",
+        "price",
+        "subtotal",
+        "value",
+        "payment",
+        "gross_sales",
+        "net_sales",
+        "gross_amount",
+        "net_amount",
+        "extended_price",
+        "line_total",
+        "item_total",
+        "charged_amount",
+        "payout",
+        "net_paid",
+        "net_payment",
+        "settlement",
+        "transfer_amount",
+      ]);
+      const DATE = new Set(["date", "order_date", "purchased_at", "created_at", "invoice_date", "day"]);
+      const PRODUCT = new Set(["product", "sku", "item", "line_item"]);
+      const CUSTOMER = new Set(["customer", "client", "account", "email"]);
+
+      function norm(s) {
+        return s
+          .trim()
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "_")
+          .replace(/^_+|_+$/g, "");
+      }
+
+      function parseCSV(text) {
+        const rows = [];
+        let row = [];
+        let field = "";
+        let i = 0;
+        let q = false;
+        while (i < text.length) {
+          const c = text[i];
+          if (q) {
+            if (c === '"') {
+              if (text[i + 1] === '"') {
+                field += '"';
+                i += 2;
+                continue;
+              }
+              q = false;
+              i++;
+              continue;
+            }
+            field += c;
+            i++;
+            continue;
+          }
+          if (c === '"') {
+            q = true;
+            i++;
+            continue;
+          }
+          if (c === ",") {
+            row.push(field);
+            field = "";
+            i++;
+            continue;
+          }
+          if (c === "\r") {
+            i++;
+            continue;
+          }
+          if (c === "\n") {
+            row.push(field);
+            field = "";
+            rows.push(row);
+            row = [];
+            i++;
+            continue;
+          }
+          field += c;
+          i++;
+        }
+        row.push(field);
+        rows.push(row);
+        while (rows.length && rows[rows.length - 1].every((x) => x === "")) rows.pop();
+        return rows;
+      }
+
+      function parseAmount(raw) {
+        let s = String(raw).trim().replace(/,/g, "");
+        if (!s) return null;
+        if (s[0] === "(" && s[s.length - 1] === ")") s = "-" + s.slice(1, -1);
+        s = s.replace(/[^0-9.\-]/g, "");
+        if (s === "" || s === "-" || s === ".") return null;
+        const n = parseFloat(s);
+        return Number.isFinite(n) ? n : null;
+      }
+
+      function parseDate(raw) {
+        const t = String(raw).trim();
+        if (!t) return null;
+        const iso = t.slice(0, 10);
+        let d = new Date(iso);
+        if (!Number.isNaN(d.getTime())) return d;
+        const mdy = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(t);
+        if (mdy) {
+          d = new Date(+mdy[3], +mdy[1] - 1, +mdy[2]);
+          return Number.isNaN(d.getTime()) ? null : d;
+        }
+        return null;
+      }
+
+      function detectColumns(headers) {
+        const map = {};
+        headers.forEach((h) => (map[norm(h)] = h));
+        const out = { date: null, amount: null, product: null, customer: null };
+        Object.keys(map).forEach((n) => {
+          const original = map[n];
+          if (!out.amount && (AMOUNT.has(n) || n.endsWith("_amount"))) out.amount = original;
+          if (!out.date && (DATE.has(n) || n.endsWith("_date"))) out.date = original;
+          if (!out.product && PRODUCT.has(n)) out.product = original;
+          if (!out.customer && CUSTOMER.has(n)) out.customer = original;
+        });
+        if (!out.amount) {
+          const hit = Object.keys(map).find((n) => {
+            if (/total|revenue|amount/.test(n)) return true;
+            if (n === "payment" || n === "payout" || n.endsWith("_payment") || n.endsWith("_payout")) return true;
+            return /gross_sales|net_sales|charged|extended|settlement|transfer/.test(n);
+          });
+          if (hit) out.amount = map[hit];
+        }
+        return out;
+      }
+
+      function analyze(matrix) {
+        if (!matrix.length) throw new Error("Empty file.");
+        const headers = matrix[0].map((h) => h.trim());
+        const cols = detectColumns(headers);
+        if (!cols.amount)
+          throw new Error(
+            "No amount column found. Rename your money column to something like: amount, revenue, total, payment, gross_sales, net_sales, line_total."
+          );
+
+        const idx = {};
+        headers.forEach((h, i) => (idx[h] = i));
+
+        let total = 0;
+        let count = 0;
+        const byMonth = new Map();
+        const byProduct = new Map();
+        const byCustomer = new Map();
+
+        for (let r = 1; r < matrix.length; r++) {
+          const line = matrix[r];
+          if (!line || !line.length) continue;
+          const row = {};
+          headers.forEach((h, i) => (row[h] = line[i] ?? ""));
+          if (!Object.values(row).some((v) => String(v).trim())) continue;
+
+          const amt = parseAmount(row[cols.amount]);
+          if (amt === null) continue;
+          total += amt;
+          count++;
+
+          let monthKey = "unknown";
+          if (cols.date) {
+            const d = parseDate(row[cols.date]);
+            if (d) {
+              const y = d.getFullYear();
+              const m = String(d.getMonth() + 1).padStart(2, "0");
+              monthKey = `${y}-${m}`;
+            }
+          }
+          byMonth.set(monthKey, (byMonth.get(monthKey) || 0) + amt);
+
+          if (cols.product && String(row[cols.product]).trim()) {
+            const k = String(row[cols.product]).trim().slice(0, 80);
+            byProduct.set(k, (byProduct.get(k) || 0) + amt);
+          }
+          if (cols.customer && String(row[cols.customer]).trim()) {
+            const k = String(row[cols.customer]).trim().slice(0, 80);
+            byCustomer.set(k, (byCustomer.get(k) || 0) + amt);
+          }
+        }
+
+        const months = Array.from(byMonth.keys()).sort();
+        const revenueByMonth = months.map((m) => ({ period: m, revenue: Math.round(byMonth.get(m) * 100) / 100 }));
+
+        function topN(m, n) {
+          return Array.from(m.entries())
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, n)
+            .map(([name, revenue]) => ({ name, revenue: Math.round(revenue * 100) / 100 }));
+        }
+
+        return {
+          cols,
+          total: Math.round(total * 100) / 100,
+          count,
+          aov: count ? Math.round((total / count) * 100) / 100 : 0,
+          revenueByMonth,
+          topProducts: cols.product ? topN(byProduct, 10) : [],
+          topCustomers: cols.customer ? topN(byCustomer, 10) : [],
+        };
+      }
+
+      function money(n) {
+        return n.toLocaleString(undefined, { style: "currency", currency: "USD" });
+      }
+
+      function renderTable(rows) {
+        if (!rows.length) return "<p class=\"hint\">No data for this breakdown.</p>";
+        const head = `<tr><th>Name</th><th>Revenue</th></tr>`;
+        const body = rows.map((r) => `<tr><td>${escapeHtml(r.name)}</td><td>${money(r.revenue)}</td></tr>`).join("");
+        return `<table><thead>${head}</thead><tbody>${body}</tbody></table>`;
+      }
+
+      function escapeHtml(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      let chart;
+
+      function drawChart(labels, values) {
+        const ctx = document.getElementById("chart");
+        if (chart) chart.destroy();
+        chart = new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels,
+            datasets: [
+              {
+                label: "Revenue",
+                data: values,
+                backgroundColor: "rgba(59,130,246,0.45)",
+                borderColor: "rgba(59,130,246,1)",
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { ticks: { color: "#8b9bb5" }, grid: { color: "rgba(36,48,68,0.6)" } },
+              y: { ticks: { color: "#8b9bb5" }, grid: { color: "rgba(36,48,68,0.6)" } },
+            },
+          },
+        });
+      }
+
+      function showError(msg) {
+        const el = document.getElementById("err");
+        el.textContent = msg;
+        el.classList.toggle("hidden", !msg);
+      }
+
+      function run(text) {
+        showError("");
+        const matrix = parseCSV(text);
+        const res = analyze(matrix);
+        document.getElementById("out").classList.remove("hidden");
+        document.getElementById("kpiTotal").textContent = money(res.total);
+        document.getElementById("kpiCount").textContent = String(res.count);
+        document.getElementById("kpiAov").textContent = money(res.aov);
+
+        const c = res.cols;
+        document.getElementById("detected").textContent =
+          `Detected columns — date: ${c.date || "—"}, amount: ${c.amount || "—"}, product: ${c.product || "—"}, customer: ${c.customer || "—"}`;
+
+        const labels = res.revenueByMonth.map((x) => x.period);
+        const values = res.revenueByMonth.map((x) => x.revenue);
+        drawChart(labels, values);
+
+        document.getElementById("tblProducts").innerHTML = renderTable(res.topProducts);
+        document.getElementById("tblCustomers").innerHTML = renderTable(res.topCustomers);
+      }
+
+      document.getElementById("file").addEventListener("change", (e) => {
+        const f = e.target.files && e.target.files[0];
+        if (!f) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            run(String(reader.result || ""));
+          } catch (err) {
+            showError(err.message || String(err));
+          }
+        };
+        reader.readAsText(f);
+      });
+
+      document.getElementById("loadSample").addEventListener("click", async () => {
+        try {
+          const res = await fetch("sample_sales.csv");
+          if (!res.ok) throw new Error("Could not load sample_sales.csv. Use a local server (see README).");
+          run(await res.text());
+        } catch (err) {
+          showError(err.message || String(err));
+        }
+      });
+    </script>
+  </body>
+</html>

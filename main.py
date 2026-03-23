@@ -31,9 +31,18 @@ os.environ.setdefault(
 from crewai import Agent, Task, Crew, Process, LLM  # noqa: E402
 
 from tools.custom_tool import ddg_search, fee_calculator, scrape_website  # noqa: E402
+from tools.revenue_analytics import sales_csv_summary  # noqa: E402
+from tools.flip_ledger import flip_csv_summary  # noqa: E402
 
 def _load_yaml(path: Path) -> dict:
   return yaml.safe_load(path.read_text()) or {}
+
+
+def _litellm_ollama_model(name: str) -> str:
+  name = (name or "").strip()
+  if not name:
+    return "ollama/llama3"
+  return name if name.startswith("ollama/") else f"ollama/{name}"
 
 
 def build_crew() -> Crew:
@@ -43,15 +52,19 @@ def build_crew() -> Crew:
   (base / "outputs").mkdir(parents=True, exist_ok=True)
 
   llm_cfg = agents_cfg.get("llm", {})
+  model = os.getenv("OLLAMA_MODEL", llm_cfg.get("model", "ollama/llama3"))
+  base_url = os.getenv("OLLAMA_BASE_URL", llm_cfg.get("base_url", "http://localhost:11434"))
   local_llm = LLM(
-    model=llm_cfg.get("model", "ollama/llama3"),
-    base_url=llm_cfg.get("base_url", "http://localhost:11434"),
+    model=_litellm_ollama_model(model),
+    base_url=base_url,
   )
 
   tool_registry = {
     "ddg_search": ddg_search,
     "fee_calculator": fee_calculator,
     "scrape_website": scrape_website,
+    "sales_csv_summary": sales_csv_summary,
+    "flip_csv_summary": flip_csv_summary,
   }
 
   agents_by_id: dict[str, Agent] = {}
@@ -85,11 +98,27 @@ def build_crew() -> Crew:
   )
 
 if __name__ == "__main__":
+  base = Path(__file__).resolve().parent
+  agents_cfg = _load_yaml(base / "config" / "agents.yaml")
+  llm_cfg = agents_cfg.get("llm", {})
+  ollama_url = os.getenv("OLLAMA_BASE_URL", llm_cfg.get("base_url", "http://localhost:11434"))
+  skip_check = os.getenv("SKIP_OLLAMA_CHECK", "").strip().lower()
+  if skip_check not in ("1", "true", "yes"):
+    from tools.ollama_preflight import require_ollama_or_exit  # noqa: E402
+
+    require_ollama_or_exit(ollama_url)
+
   crew = build_crew()
   product = os.getenv("PRODUCT", "Sony WH-1000XM5")
   target_price = os.getenv("TARGET_PRICE", "200")
   min_profit = os.getenv("MIN_PROFIT", "50")
   min_roi_percent = os.getenv("MIN_ROI_PERCENT", "30")
+  sample_sales_csv = os.getenv(
+    "SAMPLE_SALES_CSV", str(base / "revenue_pulse" / "sample_sales.csv")
+  )
+  sample_flips_csv = os.getenv(
+    "FLIP_CSV", str(base / "revenue_pulse" / "sample_flips.csv")
+  )
 
   result = crew.kickoff(
     inputs={
@@ -97,6 +126,8 @@ if __name__ == "__main__":
       "target_price": target_price,
       "min_profit": min_profit,
       "min_roi_percent": min_roi_percent,
+      "sample_sales_csv": sample_sales_csv,
+      "sample_flips_csv": sample_flips_csv,
     }
   )
   print(result.raw)

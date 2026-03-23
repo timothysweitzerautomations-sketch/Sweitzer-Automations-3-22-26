@@ -1,0 +1,7 @@
+# Python 3.10+ required (CrewAI). On macOS use Homebrew python@3.11 if /usr/bin/python3 is 3.9.
+# Recreate venv: bash scripts/setup_venv.sh
+crewai[litellm]>=1.0
+pyyaml
+duckduckgo-search
+requests
+beautifulsoup4

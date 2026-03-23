@@ -1,0 +1,3 @@
+# Install only on the machine that builds the .exe:
+#   pip install -r windows_app/requirements-build.txt
+pyinstaller>=6.0

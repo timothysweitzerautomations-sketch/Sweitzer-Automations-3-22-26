@@ -1,0 +1,41 @@
+================================================================================
+  SWEITZER AUTOMATIONS 3-22-26 — CURSOR DEMO (CLIENT-FACING)
+  Last discussion summary — print this page (Cmd+P), pick your printer
+================================================================================
+
+OPENING (~30 sec, in Cursor)
+----------------------------
+• One workspace for sales analytics, flip/resale economics, optional AI research;
+  same ideas in the browser and in app shells where it makes sense.
+• Real project folder: code, config, tests — build label 3-22-26.
+• Show: repo root in the file tree, then README.md open briefly.
+
+WHAT TO SHOW (ORDER)
+--------------------
+1) revenue_pulse/ — Revenue Pulse: CSV → KPIs & charts; core math is local Python.
+2) Flip tracker (browser: flip_tracker.html with local server) — line-by-line
+   economics; estimates vs actuals; pending rows. Say once: not tax/legal/investment advice.
+3) windows/, windows_app/, android/, apple/ — same UI can ship as Windows, Android, Apple.
+4) config/, tools/ — agents/tasks; room to extend workflows.
+5) tests/ — automated tests on CSV logic.
+
+OPTIONAL
+--------
+• main.py — AI path: CrewAI + local Ollama so research-style steps can stay on machine.
+
+NATURAL PHRASES
+---------------
+• "One codebase — browser first, plus optional native shells."
+• "Your CSV, your machine for the core analytics engine."
+• "Flip side works like a serious sheet: estimate, then actual, then compare."
+• "Tests back the engines — not just a pretty UI."
+
+CURSOR TIP
+----------
+Sidebar tour: README → revenue_pulse → flip UI in browser → platform folders → tests.
+Tell a story; don’t jump randomly between files.
+
+================================================================================
+  TO PRINT ON MAC: open this file → File → Print… (Cmd+P) → choose your printer
+  File: docs/video/CURSOR_CLIENT_DEMO_PRINT.txt
+================================================================================

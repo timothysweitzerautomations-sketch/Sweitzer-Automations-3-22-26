@@ -1,5 +1,5 @@
 llm:
-  # CrewAI uses LiteLLM for Ollama models (you installed `litellm` already).
+  # Use a model you have locally (`ollama list`). For a smaller/faster one: pull then set e.g. OLLAMA_MODEL=llama3.2:1b
   model: "ollama/llama3"
   base_url: "http://localhost:11434"
 
@@ -11,29 +11,16 @@ agents:
     tools:
       - ddg_search
 
-  - id: inspector
-    role: "Condition Inspector"
-    goal: "Read listing descriptions and spot defects, missing parts, and red flags for {product}."
-    backstory: "You are an expert at catching fine print (parts-only, cracked screens, no charging case, etc.)."
-    tools:
-      - scrape_website
-
   - id: analyst
     role: "Profit Analyst"
-    goal: "Estimate net proceeds and profit if buying {product} at {target_price}."
-    backstory: "You specialize in e-commerce margins and realistic fee/shipping assumptions."
+    goal: "Estimate net proceeds and profit if buying {product} at {target_price}, using comps first and CSV summaries only as supporting context."
+    backstory: "You specialize in e-commerce margins, marketplace fees, and shipping; you treat CSV rollups as one signal among many."
     tools:
       - fee_calculator
+      - sales_csv_summary
+      - flip_csv_summary
 
   - id: decider
     role: "Decision Maker"
     goal: "Make a BUY/PASS decision for {product} at {target_price} with clear reasoning."
     backstory: "You are strict and conservative: only recommend BUY when the math and comps support it."
-
-  - id: drafter
-    role: "eBay Listing Strategist"
-    goal: "Create a high-converting eBay title (max 80 chars) and description for {product}."
-    backstory: |
-      You are an expert reseller who knows how to use keywords to rank highly on eBay.
-      You use Title Case for titles and never use spammy terms like 'L@@K' or 'WOW'.
-      You focus on brand, model, key features, and honest condition disclosure.

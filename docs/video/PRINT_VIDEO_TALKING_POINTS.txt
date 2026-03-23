@@ -1,0 +1,64 @@
+
+
+================================================================================
+  SWEITZER AUTOMATIONS 3-22-26 — VIDEO TALKING POINTS (PRINT THIS PAGE)
+================================================================================
+
+OPENING / HOOK
+--------------
+• One project: resale sales analytics, flip tracking, optional AI research.
+• Same dashboards on the web and in Windows / Android / Mac & iPhone shells.
+• This build is labeled 3-22-26 so you know which snapshot you’re showing.
+
+
+REVENUE PULSE
+-------------
+• Upload a sales CSV in the browser; see charts and KPIs.
+• Python engine uses the standard library — runs locally with your data.
+
+
+FLIP PROFIT TRACKER
+-------------------
+• Line-by-line buy/sell economics: fees, shipping, ROI-style thinking.
+• Estimates when you source; actuals when the sale closes; pending inventory rows.
+• When both estimate and actual exist, you can talk about variance.
+• Say once: not tax, legal, or investment advice.
+
+
+PLATFORM APPS (WRAPPERS)
+------------------------
+• Same HTML dashboards bundled for Windows (.exe), Android (APK), Apple (Xcode).
+• Chart.js loads from the internet; your CSVs stay in the session / on device.
+
+
+CREWAI + OLLAMA (OPTIONAL SEGMENT)
+----------------------------------
+• Agents and tasks in config/; tools can summarize your CSVs (sales / flips).
+• Ollama keeps the LLM local if you show that path.
+
+
+CLOSE
+-----
+• Point to README, tests/, and where to build each platform.
+• Repeat short disclaimer if you showed money or profit numbers.
+
+
+================================================================================
+  QUICK PHRASES (READ NATURALLY, DON’T READ WORD-FOR-WORD)
+================================================================================
+
+  “One codebase — browser dashboards plus optional native shells.”
+
+  “Load a sample or your own CSV; nothing has to leave your machine for the engine.”
+
+  “Flip side: treat it like a serious sheet — estimates, then actuals, then compare.”
+
+  “If I turn on the AI path, CrewAI talks to Ollama on my machine.”
+
+  “This folder is the 3-22-26 snapshot.”
+
+
+================================================================================
+  (End — File: docs/video/PRINT_VIDEO_TALKING_POINTS.txt)
+================================================================================
+

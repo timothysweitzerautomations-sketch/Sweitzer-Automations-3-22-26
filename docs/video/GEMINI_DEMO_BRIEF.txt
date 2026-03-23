@@ -1,0 +1,98 @@
+================================================================================
+GEMINI HANDOFF — Sweitzer Automations 3-22-26 (demo video context)
+================================================================================
+Paste this entire file into Google Gemini (or upload it with a project zip). It
+describes the repo so Gemini can help script, time, or refine a screen recording.
+
+--------------------------------------------------------------------------------
+WHAT THIS PROJECT IS
+--------------------------------------------------------------------------------
+Personal automation / analytics workspace (Python + HTML + optional native
+wrappers). Snapshot name: "Sweitzer Automations 3-22-26" (dated build label).
+
+THREE MAIN STORYLINES FOR A DEMO VIDEO
+1) Revenue Pulse — browser dashboard for sales CSVs (charts, KPIs). Engine:
+   revenue_pulse/revenue_engine.py (Python standard library for CSV logic).
+2) Flip profit tracker — browser UI for resale rows: estimates vs actuals,
+   pending inventory, variance; engine: revenue_pulse/flip_engine.py.
+3) CrewAI + Ollama — main.py with config/agents.yaml, config/tasks.yaml;
+   tools can call sales_csv_summary / flip_csv_summary on sample CSVs. Local LLM.
+
+PLATFORM WRAPPERS (same HTML dashboards, packaged)
+- windows/ + windows_app/ — PyInstaller builds SweitzerAutomations-3-22-26.exe
+- android/ — Gradle WebView app; copies revenue_pulse into assets at build
+- apple/ — Xcode multiplatform WKWebView + custom URL scheme for local assets
+
+--------------------------------------------------------------------------------
+KEY PATHS (open in editor or mention on camera)
+--------------------------------------------------------------------------------
+README.md                    — overview, commands, layout
+docs/video/VIDEO_PREP.txt    — full video structure + checklist
+docs/video/PRINT_VIDEO_TALKING_POINTS.txt — short cue-card bullets
+WINDOWS.md                   — Windows users
+revenue_pulse/index.html     — Revenue Pulse UI
+revenue_pulse/flip_tracker.html — Flip UI
+revenue_pulse/sample_sales.csv / sample_flips.csv — demo data
+main.py                      — CrewAI entry
+config/agents.yaml, tasks.yaml
+windows_app/launcher.py      — Tk launcher for .exe
+scripts/setup_platform_apps.sh — Desktop aliases + icon regen on Mac
+
+--------------------------------------------------------------------------------
+COMMANDS THAT LOOK GOOD ON VIDEO
+--------------------------------------------------------------------------------
+# Dashboards (browser)
+python3 -m http.server 8080 --directory revenue_pulse
+# Then open http://localhost:8080 and http://localhost:8080/flip_tracker.html
+
+# Engines only (terminal)
+python3 -m revenue_pulse.revenue_engine revenue_pulse/sample_sales.csv
+python3 -m revenue_pulse.flip_engine revenue_pulse/sample_flips.csv
+
+# CrewAI (needs venv + Ollama + model)
+source .venv/bin/activate
+export PRODUCT="Sony WH-1000XM5"
+export TARGET_PRICE="200"
+python main.py
+
+# Tests (credibility)
+pip install -r requirements-dev.txt
+pytest tests/ -v
+
+--------------------------------------------------------------------------------
+WHAT TO TELL GEMINI YOU WANT
+--------------------------------------------------------------------------------
+Example prompts after pasting this brief:
+• "Given this project, suggest a 7-minute demo outline with timestamps."
+• "List 10 B-roll shots I should capture in Cursor and Safari."
+• "Write a 30-second cold open script in my voice, casual, technical but clear."
+• "What should I skip to stay under 5 minutes?"
+
+--------------------------------------------------------------------------------
+HOW TO GET THE "FULL PROJECT" INTO GEMINI (I cannot upload for you)
+--------------------------------------------------------------------------------
+You must do one of these in your browser or app:
+
+A) Google AI Studio (aistudio.google.com) — New prompt → attach files → upload
+   a ZIP of the project (see zip command below). Also paste this .txt.
+
+B) Gemini app (gemini.google.com) — Use + / attach → upload ZIP or paste this
+   full brief (Gemini has context limits; brief + selective files often works).
+
+C) Zip without huge folders (recommended). From Terminal:
+   bash "/Users/timothysweitzer/Sweitzer Automations 3-22-26/scripts/zip_for_gemini.sh"
+   That writes a sibling file next to your project folder:
+   ../Sweitzer Automations 3-22-26-for-Gemini.zip
+   Upload that ZIP to Gemini / Google AI Studio, plus paste this .txt if needed.
+
+D) If upload size fails: paste README.md + this file + revenue_pulse/README
+   if any — or upload only config/, revenue_pulse/*.py, main.py.
+
+--------------------------------------------------------------------------------
+DISCLAIMERS FOR ON-CAMERA (flip / money)
+--------------------------------------------------------------------------------
+State once: not tax, legal, or investment advice; numbers are illustrative.
+
+================================================================================
+END OF BRIEF — Sweitzer Automations 3-22-26
+================================================================================

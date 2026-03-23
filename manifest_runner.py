@@ -21,6 +21,13 @@ def main() -> None:
 
   crew = build_crew()
 
+  sample_sales_csv = os.getenv(
+    "SAMPLE_SALES_CSV", str(base / "revenue_pulse" / "sample_sales.csv")
+  )
+  sample_flips_csv = os.getenv(
+    "FLIP_CSV", str(base / "revenue_pulse" / "sample_flips.csv")
+  )
+
   ts = datetime.now().strftime("%Y%m%d-%H%M%S")
   summary_path = outputs_dir / f"{ts}_manifest_summary.csv"
 
@@ -55,6 +62,8 @@ def main() -> None:
           "target_price": target_price,
           "min_profit": min_profit,
           "min_roi_percent": min_roi_percent,
+          "sample_sales_csv": sample_sales_csv,
+          "sample_flips_csv": sample_flips_csv,
         }
       )
 

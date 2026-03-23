@@ -1,0 +1,23 @@
+{
+  // Client-friendly Explorer: hide caches, venv, and local app data (toggle off if you need them visible).
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/.pytest_cache": true,
+    "**/*.pyc": true,
+    ".venv": true,
+    ".data": true
+  },
+  "search.exclude": {
+    "**/.venv": true,
+    "**/__pycache__": true,
+    ".data": true,
+    "**/.pytest_cache": true
+  },
+  "files.watcherExclude": {
+    "**/.venv/**": true,
+    "**/.data/**": true,
+    "**/__pycache__/**": true
+  },
+  "explorer.sortOrder": "type",
+  "explorer.autoReveal": true
+}

@@ -1,0 +1,91 @@
+================================================================================
+  DRAG THIS FILE INTO GEMINI (or Google AI Studio) — full demo-video context
+  Project: Sweitzer Automations 3-22-26
+================================================================================
+
+WHAT THIS IS
+------------
+A Python + HTML workspace for resale analytics: sales dashboards, a flip
+profit tracker, optional CrewAI agents with a local LLM (Ollama), plus the
+same web dashboards packaged for Windows (.exe), Android (APK), and Mac /
+iPhone (Xcode). Build label: 3-22-26.
+
+REPO LAYOUT (top level)
+-----------------------
+main.py                 CrewAI entrypoint
+config/                 agents.yaml, tasks.yaml
+tools/                  revenue_analytics.py, flip_ledger.py, custom tools
+revenue_pulse/          index.html, flip_tracker.html, revenue_engine.py,
+                        flip_engine.py, sample_sales.csv, sample_flips.csv
+windows_app/            Tk launcher + PyInstaller build docs
+windows/                icon.ico, BUILD.bat (Windows)
+android/                Gradle WebView app
+apple/                  Xcode SweitzerAutomations.xcodeproj
+tests/                  pytest for revenue + flip engines
+scripts/                setup_platform_apps.sh, zip_for_gemini.sh, windows/*.bat
+README.md, WINDOWS.md, docs/video/VIDEO_PREP.txt, docs/video/PRINT_VIDEO_TALKING_POINTS.txt
+
+THREE DEMO STORYLINES
+---------------------
+1) REVENUE PULSE — Browser UI for transaction CSVs; charts/KPIs. Engine uses
+   Python stdlib (revenue_engine.py). Load sample or upload CSV.
+
+2) FLIP PROFIT TRACKER — flip_tracker.html + flip_engine.py. Per-row buy/sell,
+   estimates, actuals, pending rows, variance when both exist. Not tax/legal
+   advice.
+
+3) CREWAI + OLLAMA — main.py; agents search/scrape; tools can summarize CSVs
+   (sales_csv_summary, flip_csv_summary). Runs locally with Ollama.
+
+PLATFORM WRAPPERS
+-----------------
+Same HTML in revenue_pulse/ is bundled: PyInstaller → SweitzerAutomations-
+3-22-26.exe; Android WebView; Apple WKWebView with local asset scheme.
+
+COMMANDS ON CAMERA
+------------------
+# Dashboards
+python3 -m http.server 8080 --directory revenue_pulse
+# Open http://localhost:8080 and /flip_tracker.html
+
+# Engines (terminal)
+python3 -m revenue_pulse.revenue_engine revenue_pulse/sample_sales.csv
+python3 -m revenue_pulse.flip_engine revenue_pulse/sample_flips.csv
+
+# CrewAI (venv + Ollama running)
+source .venv/bin/activate
+export PRODUCT="Sony WH-1000XM5"
+export TARGET_PRICE="200"
+python main.py
+
+# Tests
+pip install -r requirements-dev.txt && pytest tests/ -v
+
+TALKING POINTS (VIDEO)
+----------------------
+• One codebase: browser dashboards + optional native shells (Windows, Android,
+  Apple).
+• Revenue Pulse: CSV in, charts out — engine stays local.
+• Flip tracker: treat it like a serious sheet — estimates, actuals, pending,
+  variance.
+• Optional AI path: CrewAI + Ollama on your machine.
+• Snapshot labeled 3-22-26.
+• Disclaimer once: not tax, legal, or investment advice.
+
+
+ASK GEMINI (examples)
+---------------------
+• "Given this file, write a 7-minute demo outline with timestamps."
+• "List B-roll: Cursor, Safari, Terminal — in order."
+• "Cold open script, 30 seconds, friendly expert tone."
+• "What to cut if I only have 4 minutes?"
+
+
+OPTIONAL SECOND FILE
+--------------------
+For full source context, run:  bash scripts/zip_for_gemini.sh
+Then upload the generated ZIP alongside this .txt.
+
+================================================================================
+END — single-file upload for Gemini
+================================================================================

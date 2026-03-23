@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Flip profit tracker — Sweitzer Automations</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
+    <style>
+      :root {
+        --bg: #0c1117;
+        --panel: #151c24;
+        --border: #243044;
+        --text: #e8edf5;
+        --muted: #8b9bb5;
+        --accent: #22c55e;
+        --link: #3b82f6;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+        background: radial-gradient(1200px 600px at 20% -10%, #1a3028 0%, var(--bg) 55%);
+        color: var(--text);
+        min-height: 100vh;
+      }
+      .wrap {
+        max-width: 1150px;
+        margin: 0 auto;
+        padding: 2rem 1.25rem 4rem;
+      }
+      h1 {
+        font-size: 1.75rem;
+        font-weight: 650;
+        letter-spacing: -0.02em;
+        margin: 0 0 0.35rem;
+      }
+      .sub {
+        color: var(--muted);
+        margin: 0 0 1rem;
+        max-width: 62ch;
+        line-height: 1.55;
+      }
+      .nav a {
+        color: var(--link);
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .nav a:hover {
+        text-decoration: underline;
+      }
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.25rem 1.35rem;
+        margin-bottom: 1rem;
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        align-items: center;
+      }
+      label.btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--accent);
+        color: #0c1117;
+        padding: 0.55rem 1rem;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+      }
+      label.btn:hover {
+        filter: brightness(1.06);
+      }
+      input[type="file"] {
+        display: none;
+      }
+      button.ghost {
+        background: transparent;
+        color: var(--text);
+        border: 1px solid var(--border);
+        padding: 0.5rem 0.85rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      button.ghost:hover {
+        border-color: var(--muted);
+      }
+      .kpis {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 0.75rem;
+        margin-top: 1rem;
+      }
+      .kpi {
+        background: #0e141c;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 0.85rem;
+      }
+      .kpi span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.35rem;
+      }
+      .kpi strong {
+        font-size: 1.1rem;
+        font-weight: 700;
+      }
+      .hint {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-top: 0.75rem;
+      }
+      .err {
+        color: #f87171;
+        margin-top: 0.75rem;
+        font-size: 0.9rem;
+      }
+      canvas {
+        max-height: 280px;
+      }
+      #tblFlips {
+        overflow-x: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.72rem;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 0.4rem 0.3rem;
+        border-bottom: 1px solid var(--border);
+      }
+      th {
+        color: var(--muted);
+        font-weight: 600;
+        font-size: 0.68rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+      .cols {
+        font-size: 0.82rem;
+        color: var(--muted);
+      }
+      .hidden {
+        display: none !important;
+      }
+      .badge {
+        display: inline-block;
+        padding: 0.15rem 0.45rem;
+        border-radius: 4px;
+        font-size: 0.68rem;
+        font-weight: 700;
+      }
+      .badge-sold {
+        background: rgba(34, 197, 94, 0.25);
+        color: #86efac;
+      }
+      .badge-pending {
+        background: rgba(59, 130, 246, 0.25);
+        color: #93c5fd;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <p class="nav"><a href="index.html">← Revenue Pulse (sales totals)</a></p>
+      <h1>Flip profit tracker</h1>
+      <p class="sub">
+        <strong>Sourcing:</strong> fill <code>est_sale_price</code> and optional <code>est_*</code> costs when you buy.
+        <strong>After sale:</strong> fill <code>sold_price</code> and actual fees, shipping, materials, mileage. Leave
+        <code>sold_price</code> empty while inventory is still unsold — we show <strong>estimated</strong> profit for
+        pending lines. When both exist, we show <strong>variance</strong> (actual vs what you expected at sourcing).
+      </p>
+
+      <div class="panel">
+        <div class="row">
+          <label class="btn">
+            <input id="file" type="file" accept=".csv,text/csv" />
+            Choose flip CSV
+          </label>
+          <button type="button" class="ghost" id="loadSample">Load sample flips</button>
+        </div>
+        <p class="hint">
+          Columns: <code>buy_cost</code>, <code>est_sale_price</code> (sourcing), <code>sold_price</code> (when closed),
+          <code>purchase_date</code>, <code>sale_date</code>, <code>est_fee_percent</code>, <code>est_shipping</code>,
+          <code>est_packaging</code>, <code>est_mileage_cost</code>, plus actual <code>fee_percent</code>,
+          <code>shipping_cost</code>, <code>taxes</code>, <code>promotion_fees</code>, <code>packaging_cost</code>,
+          <code>mileage_cost</code>, <code>item</code>.
+        </p>
+        <div id="err" class="err hidden"></div>
+      </div>
+
+      <div id="out" class="hidden">
+        <div class="kpis">
+          <div class="kpi"><span>Actual profit (sold)</span><strong id="kpiActual">—</strong></div>
+          <div class="kpi"><span>Est. profit (pending)</span><strong id="kpiPendingEst">—</strong></div>
+          <div class="kpi"><span>Sold / Pending</span><strong id="kpiCounts">—</strong></div>
+          <div class="kpi"><span>Avg variance (est vs actual)</span><strong id="kpiVar">—</strong></div>
+          <div class="kpi"><span>ROI sold %</span><strong id="kpiRoi">—</strong></div>
+          <div class="kpi"><span>Extras sold (tax+…)</span><strong id="kpiExtra">—</strong></div>
+        </div>
+        <p class="cols" id="detected"></p>
+
+        <div class="panel" style="margin-top: 1rem">
+          <h2 style="margin: 0 0 0.75rem; font-size: 1.05rem">Actual profit by month (sold)</h2>
+          <canvas id="chart" height="110"></canvas>
+        </div>
+
+        <div class="panel">
+          <h2 style="margin: 0 0 0.75rem; font-size: 1.05rem">All lines</h2>
+          <div id="tblFlips"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const DEFAULT_FEE = 15;
+      const BUY = new Set(["buy_cost", "buy_price", "cost", "purchase_price", "item_cost", "cogs"]);
+      const SALE = new Set(["sold_price", "sale_price", "sale_total", "amount", "gross_sale", "revenue"]);
+      const FEE_PCT = new Set(["fee_percent", "platform_fee_percent", "fvf_percent", "marketplace_fee_percent"]);
+      const FEE_AMT = new Set(["fee_amount", "platform_fees", "total_fees", "fees"]);
+      const SHIP = new Set(["shipping_cost", "shipping_paid", "ship_cost", "shipping", "postage"]);
+      const DATE = new Set(["sale_date", "sold_date", "date", "order_date", "shipped_date"]);
+      const PDATE = new Set(["purchase_date", "buy_date", "sourced_date", "source_date"]);
+      const ITEM = new Set(["item", "title", "product", "sku", "listing"]);
+      const TAX = new Set(["taxes", "sales_tax", "tax_paid", "tax_expense", "sales_taxes"]);
+      const PROMO = new Set(["promotion_fees", "promoted_listing", "ad_fees", "advertising", "ads"]);
+      const PACK = new Set(["packaging_cost", "shipping_materials", "materials", "supplies", "boxes_tape"]);
+      const MILE = new Set(["mileage_cost", "mileage_dollars", "vehicle_mileage", "mileage_expense"]);
+      const EST_SALE = new Set(["est_sale_price", "estimated_sale", "target_sale", "expected_sale", "comp_price"]);
+      const EST_FEE_PCT = new Set(["est_fee_percent", "estimated_fee_percent"]);
+      const EST_FEE_AMT = new Set(["est_fee_amount", "estimated_fees"]);
+      const EST_SHIP = new Set(["est_shipping", "estimated_shipping", "est_postage"]);
+      const EST_TAX = new Set(["est_taxes", "estimated_taxes"]);
+      const EST_PROMO = new Set(["est_promotion_fees", "est_ads", "estimated_promo"]);
+      const EST_PACK = new Set(["est_packaging", "estimated_materials"]);
+      const EST_MILE = new Set(["est_mileage_cost", "estimated_mileage"]);
+
+      function colAmt(row, col) {
+        if (!col) return 0;
+        const v = parseAmount(row[col]);
+        return v !== null ? v : 0;
+      }
+
+      function norm(s) {
+        return s
+          .trim()
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "_")
+          .replace(/^_+|_+$/g, "");
+      }
+
+      function parseCSV(text) {
+        const rows = [];
+        let row = [];
+        let field = "";
+        let i = 0;
+        let q = false;
+        while (i < text.length) {
+          const c = text[i];
+          if (q) {
+            if (c === '"') {
+              if (text[i + 1] === '"') {
+                field += '"';
+                i += 2;
+                continue;
+              }
+              q = false;
+              i++;
+              continue;
+            }
+            field += c;
+            i++;
+            continue;
+          }
+          if (c === '"') {
+            q = true;
+            i++;
+            continue;
+          }
+          if (c === ",") {
+            row.push(field);
+            field = "";
+            i++;
+            continue;
+          }
+          if (c === "\r") {
+            i++;
+            continue;
+          }
+          if (c === "\n") {
+            row.push(field);
+            field = "";
+            rows.push(row);
+            row = [];
+            i++;
+            continue;
+          }
+          field += c;
+          i++;
+        }
+        row.push(field);
+        rows.push(row);
+        while (rows.length && rows[rows.length - 1].every((x) => x === "")) rows.pop();
+        return rows;
+      }
+
+      function parseAmount(raw) {
+        let s = String(raw ?? "").trim().replace(/,/g, "");
+        if (!s) return null;
+        if (s[0] === "(" && s[s.length - 1] === ")") s = "-" + s.slice(1, -1);
+        s = s.replace(/[^0-9.\-]/g, "");
+        if (s === "" || s === "-" || s === ".") return null;
+        const n = parseFloat(s);
+        return Number.isFinite(n) ? n : null;
+      }
+
+      function parseDate(raw) {
+        const t = String(raw ?? "").trim();
+        if (!t) return null;
+        const iso = t.slice(0, 10);
+        let d = new Date(iso);
+        if (!Number.isNaN(d.getTime())) return d;
+        const mdy = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(t);
+        if (mdy) {
+          d = new Date(+mdy[3], +mdy[1] - 1, +mdy[2]);
+          return Number.isNaN(d.getTime()) ? null : d;
+        }
+        return null;
+      }
+
+      function detectFlipColumns(headers) {
+        const map = {};
+        headers.forEach((h) => (map[norm(h)] = h));
+        const out = {
+          buy: null,
+          sale: null,
+          fee_percent: null,
+          fee_amount: null,
+          shipping: null,
+          date: null,
+          purchase_date: null,
+          item: null,
+          taxes: null,
+          promotion_fees: null,
+          packaging: null,
+          mileage: null,
+          est_sale: null,
+          est_fee_percent: null,
+          est_fee_amount: null,
+          est_shipping: null,
+          est_taxes: null,
+          est_promotion_fees: null,
+          est_packaging: null,
+          est_mileage: null,
+        };
+        Object.keys(map).forEach((n) => {
+          const o = map[n];
+          if (!out.buy && BUY.has(n)) out.buy = o;
+          if (!out.sale && SALE.has(n)) out.sale = o;
+          if (!out.fee_percent && FEE_PCT.has(n)) out.fee_percent = o;
+          if (!out.fee_amount && FEE_AMT.has(n)) out.fee_amount = o;
+          if (!out.shipping && SHIP.has(n)) out.shipping = o;
+          if (!out.date && DATE.has(n)) out.date = o;
+          if (!out.purchase_date && PDATE.has(n)) out.purchase_date = o;
+          if (!out.item && ITEM.has(n)) out.item = o;
+          if (!out.taxes && TAX.has(n)) out.taxes = o;
+          if (!out.promotion_fees && PROMO.has(n)) out.promotion_fees = o;
+          if (!out.packaging && PACK.has(n)) out.packaging = o;
+          if (!out.mileage && MILE.has(n)) out.mileage = o;
+          if (!out.est_sale && EST_SALE.has(n)) out.est_sale = o;
+          if (!out.est_fee_percent && EST_FEE_PCT.has(n)) out.est_fee_percent = o;
+          if (!out.est_fee_amount && EST_FEE_AMT.has(n)) out.est_fee_amount = o;
+          if (!out.est_shipping && EST_SHIP.has(n)) out.est_shipping = o;
+          if (!out.est_taxes && EST_TAX.has(n)) out.est_taxes = o;
+          if (!out.est_promotion_fees && EST_PROMO.has(n)) out.est_promotion_fees = o;
+          if (!out.est_packaging && EST_PACK.has(n)) out.est_packaging = o;
+          if (!out.est_mileage && EST_MILE.has(n)) out.est_mileage = o;
+        });
+        if (!out.buy) {
+          const hit = Object.keys(map).find(
+            (n) => (n.includes("buy") || (n.endsWith("_cost") && !n.includes("fee"))) && !n.startsWith("est")
+          );
+          if (hit) out.buy = map[hit];
+        }
+        if (!out.sale) {
+          const hit = Object.keys(map).find(
+            (n) => /sold|sale|gross/.test(n) && !n.includes("fee") && !n.startsWith("est")
+          );
+          if (hit) out.sale = map[hit];
+        }
+        return out;
+      }
+
+      function computeActual(row, cols, buy, sale, defFee) {
+        let feePct = defFee;
+        if (cols.fee_percent && String(row[cols.fee_percent]).trim()) {
+          const v = parseAmount(row[cols.fee_percent]);
+          if (v !== null) feePct = v;
+        }
+        let ship = 0;
+        if (cols.shipping) {
+          const v = parseAmount(row[cols.shipping]);
+          if (v !== null) ship = v;
+        }
+        let fees;
+        if (cols.fee_amount && String(row[cols.fee_amount]).trim()) {
+          const v = parseAmount(row[cols.fee_amount]);
+          fees = v !== null ? v : sale * (feePct / 100);
+        } else {
+          fees = sale * (feePct / 100);
+        }
+        const net = sale - fees - ship;
+        const taxes = colAmt(row, cols.taxes);
+        const promo = colAmt(row, cols.promotion_fees);
+        const packaging = colAmt(row, cols.packaging);
+        const mileage = colAmt(row, cols.mileage);
+        const extra = taxes + promo + packaging + mileage;
+        const profit = net - buy - extra;
+        const roi = buy > 0 ? (profit / buy) * 100 : 0;
+        return { fees, ship, taxes, promo, packaging, mileage, extra, net, profit, roi };
+      }
+
+      function computeEstimate(row, cols, buy, estSale, defFee) {
+        let feePct = defFee;
+        if (cols.est_fee_percent && String(row[cols.est_fee_percent]).trim()) {
+          const v = parseAmount(row[cols.est_fee_percent]);
+          if (v !== null) feePct = v;
+        }
+        let ship = 0;
+        if (cols.est_shipping) {
+          const v = parseAmount(row[cols.est_shipping]);
+          if (v !== null) ship = v;
+        }
+        let fees;
+        if (cols.est_fee_amount && String(row[cols.est_fee_amount]).trim()) {
+          const v = parseAmount(row[cols.est_fee_amount]);
+          fees = v !== null ? v : estSale * (feePct / 100);
+        } else {
+          fees = estSale * (feePct / 100);
+        }
+        const net = estSale - fees - ship;
+        const taxes = colAmt(row, cols.est_taxes);
+        const promo = colAmt(row, cols.est_promotion_fees);
+        const packaging = colAmt(row, cols.est_packaging);
+        const mileage = colAmt(row, cols.est_mileage);
+        const extra = taxes + promo + packaging + mileage;
+        const profit = net - buy - extra;
+        const roi = buy > 0 ? (profit / buy) * 100 : 0;
+        return { fees, ship, taxes, promo, packaging, mileage, extra, net, profit, roi };
+      }
+
+      function analyzeFlips(matrix) {
+        if (!matrix.length) throw new Error("Empty file.");
+        const headers = matrix[0].map((h) => h.trim());
+        const cols = detectFlipColumns(headers);
+        if (!cols.buy) throw new Error("Need buy_cost (or cost).");
+
+        const rows = [];
+        let totalActual = 0;
+        let totalBuySold = 0;
+        let totalPendingEst = 0;
+        let totalBuyPending = 0;
+        let sumVar = 0;
+        let varN = 0;
+        let sumExtraSold = 0;
+        const byMonth = new Map();
+        const byMonthEst = new Map();
+
+        for (let r = 1; r < matrix.length; r++) {
+          const line = matrix[r];
+          if (!line || !line.length) continue;
+          const row = {};
+          headers.forEach((h, i) => (row[h] = line[i] ?? ""));
+          if (!Object.values(row).some((v) => String(v).trim())) continue;
+
+          const buy = parseAmount(row[cols.buy]);
+          if (buy === null) continue;
+
+          const saleRaw = cols.sale ? String(row[cols.sale] ?? "").trim() : "";
+          const sale = saleRaw === "" ? null : parseAmount(row[cols.sale]);
+          const estSale = cols.est_sale ? parseAmount(row[cols.est_sale]) : null;
+
+          const itemLabel =
+            cols.item && String(row[cols.item]).trim()
+              ? String(row[cols.item]).trim().slice(0, 48)
+              : `Row ${r + 1}`;
+
+          let est = null;
+          if (estSale !== null) {
+            est = computeEstimate(row, cols, buy, estSale, DEFAULT_FEE);
+          }
+
+          if (sale === null) {
+            if (est === null) continue;
+            totalPendingEst += est.profit;
+            totalBuyPending += buy;
+            let mk = "unknown";
+            if (cols.purchase_date) {
+              const d = parseDate(row[cols.purchase_date]);
+              if (d) mk = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+            } else if (cols.date) {
+              const d = parseDate(row[cols.date]);
+              if (d) mk = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+            }
+            byMonthEst.set(mk, (byMonthEst.get(mk) || 0) + est.profit);
+            rows.push({
+              status: "pending",
+              item: itemLabel,
+              buy,
+              est,
+              actual: null,
+              variance: null,
+              month: mk,
+            });
+            continue;
+          }
+
+          const act = computeActual(row, cols, buy, sale, DEFAULT_FEE);
+          totalActual += act.profit;
+          totalBuySold += buy;
+          sumExtraSold += act.extra;
+
+          let mk = "unknown";
+          if (cols.date) {
+            const d = parseDate(row[cols.date]);
+            if (d) mk = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+          }
+          byMonth.set(mk, (byMonth.get(mk) || 0) + act.profit);
+
+          let variance = null;
+          if (est !== null) {
+            variance = act.profit - est.profit;
+            sumVar += variance;
+            varN++;
+          }
+
+          rows.push({
+            status: "sold",
+            item: itemLabel,
+            buy,
+            sale,
+            est,
+            actual: act,
+            variance,
+            month: mk,
+          });
+        }
+
+        const sold = rows.filter((x) => x.status === "sold");
+        const pending = rows.filter((x) => x.status === "pending");
+        const months = Array.from(byMonth.keys()).sort();
+        const profitByMonth = months.map((m) => ({ period: m, profit: Math.round(byMonth.get(m) * 100) / 100 }));
+
+        return {
+          cols,
+          rows,
+          sold,
+          pending,
+          totalActual,
+          totalPendingEst,
+          totalBuySold,
+          totalBuyPending,
+          sumExtraSold,
+          avgVariance: varN ? sumVar / varN : null,
+          varN,
+          profitByMonth,
+        };
+      }
+
+      function money(n) {
+        return n.toLocaleString(undefined, { style: "currency", currency: "USD" });
+      }
+
+      function escapeHtml(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      let chart;
+
+      function drawChart(labels, values) {
+        const ctx = document.getElementById("chart");
+        if (chart) chart.destroy();
+        chart = new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels,
+            datasets: [
+              {
+                label: "Profit",
+                data: values,
+                backgroundColor: "rgba(34,197,94,0.4)",
+                borderColor: "rgba(34,197,94,1)",
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { ticks: { color: "#8b9bb5" }, grid: { color: "rgba(36,48,68,0.6)" } },
+              y: { ticks: { color: "#8b9bb5" }, grid: { color: "rgba(36,48,68,0.6)" } },
+            },
+          },
+        });
+      }
+
+      function showError(msg) {
+        const el = document.getElementById("err");
+        el.textContent = msg;
+        el.classList.toggle("hidden", !msg);
+      }
+
+      function run(text) {
+        showError("");
+        const matrix = parseCSV(text);
+        const res = analyzeFlips(matrix);
+        document.getElementById("out").classList.remove("hidden");
+
+        document.getElementById("kpiActual").textContent = money(res.totalActual);
+        document.getElementById("kpiPendingEst").textContent = money(res.totalPendingEst);
+        document.getElementById("kpiCounts").textContent = `${res.sold.length} / ${res.pending.length}`;
+        document.getElementById("kpiVar").textContent =
+          res.varN > 0 ? `${money(res.avgVariance)} (${res.varN} sold w/ est.)` : "—";
+        document.getElementById("kpiRoi").textContent =
+          res.totalBuySold > 0 ? `${((res.totalActual / res.totalBuySold) * 100).toFixed(1)}%` : "—";
+        document.getElementById("kpiExtra").textContent = money(res.sumExtraSold);
+
+        const c = res.cols;
+        document.getElementById("detected").textContent = `Columns detected — buy: ${c.buy || "—"}, sold: ${c.sale || "—"}, est_sale: ${c.est_sale || "—"}, purchase_date: ${c.purchase_date || "—"}, sale_date: ${c.date || "—"}`;
+
+        const labels = res.profitByMonth.map((x) => x.period);
+        const values = res.profitByMonth.map((x) => x.profit);
+        drawChart(labels, values);
+
+        const head =
+          "<tr><th>Status</th><th>Item</th><th>Buy</th><th>Est gross</th><th>Est profit</th><th>Sold price</th><th>Actual profit</th><th>Variance</th><th>Month</th></tr>";
+        const body = res.rows
+          .map((x) => {
+            const badge =
+              x.status === "sold"
+                ? '<span class="badge badge-sold">SOLD</span>'
+                : '<span class="badge badge-pending">PENDING</span>';
+            const ep = x.est ? money(x.est.profit) : "—";
+            const es = x.est ? money(x.est.net + x.est.fees + x.est.ship) : "—";
+            const ap = x.actual ? money(x.actual.profit) : "—";
+            const soldP = typeof x.sale === "number" ? money(x.sale) : "—";
+            const v =
+              x.variance !== null && x.variance !== undefined ? money(x.variance) : "—";
+            return `<tr><td>${badge}</td><td>${escapeHtml(x.item)}</td><td>${money(x.buy)}</td><td>${es}</td><td>${ep}</td><td>${soldP}</td><td>${ap}</td><td>${v}</td><td>${escapeHtml(x.month)}</td></tr>`;
+          })
+          .join("");
+        document.getElementById("tblFlips").innerHTML = `<table><thead>${head}</thead><tbody>${body}</tbody></table>`;
+      }
+
+      document.getElementById("file").addEventListener("change", (e) => {
+        const f = e.target.files && e.target.files[0];
+        if (!f) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            run(String(reader.result || ""));
+          } catch (err) {
+            showError(err.message || String(err));
+          }
+        };
+        reader.readAsText(f);
+      });
+
+      document.getElementById("loadSample").addEventListener("click", async () => {
+        try {
+          const res = await fetch("sample_flips.csv");
+          if (!res.ok) throw new Error("Could not load sample_flips.csv. Serve this folder over HTTP (see README).");
+          run(await res.text());
+        } catch (err) {
+          showError(err.message || String(err));
+        }
+      });
+    </script>
+  </body>
+</html>

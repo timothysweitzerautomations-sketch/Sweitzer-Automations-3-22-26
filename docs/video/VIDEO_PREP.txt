@@ -1,0 +1,53 @@
+Sweitzer Automations 3-22-26 — video prep
+==========================================
+
+Cleanup already safe for recording
+------------------------------------
+• Android `build/` folders and local Gradle caches can be removed before a demo (they regenerate).
+• `.pytest_cache` / `__pycache__` — fine to delete; tests still run after `pip install -r requirements-dev.txt`.
+• Keep: `.venv/`, `outputs/`, `revenue_pulse/sample_*.csv`, git history — unless you want a smaller copy for export.
+
+Before you hit Record
+----------------------
+• **Full terminal + browser runbook (copy-paste blocks):** `~/Desktop/Sweitzer_Demo_Video_Runbook.txt`
+• **One-shot “ready to record?” check:** `bash scripts/demo_video_ready.sh` (Ollama + pytest + build_crew)
+• Open this folder in Cursor: Sweitzer Automations 3-22-26
+• Desktop aliases (optional): run `bash scripts/setup_platform_apps.sh` so **… - Project / Windows / Android / Apple** point here
+• Browser demo: `python3 -m http.server 8080 --directory revenue_pulse` → http://localhost:8080
+• CrewAI demo: Ollama running + model pulled; `source .venv/bin/activate` then `python main.py` with PRODUCT / TARGET_PRICE set
+• Windows .exe: needs a Windows PC to build; mention “built with PyInstaller” if you only show the folder
+• Android: Android Studio + SDK for a real APK build; otherwise show the `android/` project in Cursor/Xcode-style narrative
+• Apple: Xcode to Run on Mac or Simulator; show the `.xcodeproj` path from README
+
+Suggested video structure (5–12 min)
+------------------------------------
+1. Hook (15–20 s) — What problem this solves: resale analytics + flip tracking + optional AI research, in one repo.
+2. Project tour (60–90 s) — Cursor: top-level folders (`revenue_pulse/`, `windows_app/`, `windows/`, `android/`, `apple/`, `config/`, `tools/`). Name snapshot: **3-22-26**.
+3. Revenue Pulse (90–120 s) — Start server OR open packaged app story; load sample CSV; show chart/KPIs; one sentence on “stdlib Python engine.”
+4. Flip tracker (60–90 s) — Sample flips; pending vs sold; estimates vs actuals / variance (if you show JSON or UI).
+5. Platform wrappers (60 s) — Same HTML in Windows `.exe`, Android WebView, Apple WKWebView; data stays local; Chart.js needs internet for CDN.
+6. CrewAI + Ollama (45–90 s) — Optional: agents, tasks, tools (`sales_csv_summary` / `flip_csv_summary`); local LLM; disclaimer: not financial advice.
+7. Close (20 s) — Where to find README, WINDOWS.md, `docs/video/`, `scripts/setup_platform_apps.sh`, tests.
+
+Talking points (use your words)
+--------------------------------
+• “One codebase: dashboards in the browser, plus native-style shells on Windows, Android, and Mac/iPhone.”
+• “Revenue Pulse: upload a sales CSV, see aggregates and charts without sending data to a server.”
+• “Flip tracker: line-by-line buy/sell economics, estimates when you source, actuals when you close, variance when both exist.”
+• “The AI layer uses CrewAI and a local model via Ollama so searches and reports can stay on your machine.”
+• “Tests in `tests/` back the CSV engines.”
+• “This snapshot is labeled 3-22-26 so you know which build you’re looking at.”
+
+Include on screen (checklist)
+-----------------------------
+[ ] Folder open in Cursor with README visible at least once  
+[ ] `revenue_pulse/index.html` in browser (localhost or file story)  
+[ ] `flip_tracker.html` or link from Revenue Pulse  
+[ ] Optional: `python -m revenue_pulse.revenue_engine …` or flip_engine one-liner in terminal  
+[ ] Optional: Desktop aliases **Sweitzer Automations 3-22-26 - …**  
+[ ] Optional: `main.py` or `config/agents.yaml` peek + Ollama mention  
+[ ] End card: repo path, docs files, disclaimer (not tax/legal advice for flip copy)
+
+Disclaimer line (flip / profit copy)
+------------------------------------
+Say once: numbers are for illustration; not tax, legal, or investment advice.

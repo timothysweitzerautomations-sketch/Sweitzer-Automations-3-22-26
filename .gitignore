@@ -1,6 +1,10 @@
+build/
+dist/
+*.spec
 .DS_Store
 __pycache__/
 *.pyc
+.pytest_cache/
 
 # Virtualenvs
 venv/
@@ -11,4 +15,19 @@ venv/
 
 # Generated outputs (keep if you want; remove this line to track outputs)
 outputs/
+
+# Android
+android/.gradle/
+android/**/build/
+android/local.properties
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# Xcode / Apple
+apple/**/xcuserdata/
+apple/**/*.xcuserstate
+apple/**/DerivedData/
+**/apple/**/.DS_Store
 

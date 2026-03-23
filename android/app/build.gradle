@@ -1,0 +1,46 @@
+plugins {
+    id "com.android.application"
+}
+
+def repoRoot = rootProject.projectDir.parentFile
+
+tasks.register("copyRevenuePulseAssets", Copy) {
+    from(new File(repoRoot, "revenue_pulse"))
+    into(file("$projectDir/src/main/assets/revenue_pulse"))
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
+tasks.named("preBuild").configure {
+    dependsOn(tasks.named("copyRevenuePulseAssets"))
+}
+
+android {
+    namespace "com.sweitzer.automations"
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.sweitzer.automations"
+        minSdk 26
+        targetSdk 35
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation "androidx.core:core:1.12.0"
+    implementation "androidx.appcompat:appcompat:1.6.1"
+    implementation "androidx.webkit:webkit:1.10.0"
+}
