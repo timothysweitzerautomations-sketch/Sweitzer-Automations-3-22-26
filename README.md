@@ -6,7 +6,16 @@
 
 This directory is the **full** project: `main.py`, `config/`, `tools/`, `revenue_pulse/`, and git history.
 
-**CI:** on push/PR to `main` or `master`, [`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs `pytest`.
+**CI (GitHub Actions):** on push/PR to `main` or `master`, [`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs:
+
+| Job | What it checks |
+|-----|----------------|
+| **test** | `pytest`, `build_crew()` smoke test |
+| **android** | `./gradlew assembleDebug` (Ubuntu + Android SDK) |
+| **xcode** | `xcodebuild` for macOS (`CODE_SIGNING_ALLOWED=NO`) |
+| **windows_exe** | PyInstaller → `SweitzerAutomations-3-22-26.exe` |
+
+**Local (optional):** `bash scripts/verify_local_platforms.sh` — runs `demo_video_ready.sh` plus Android/Xcode **only if** the Android SDK and full **Xcode** (not only Command Line Tools) are installed. Windows `.exe` still needs a Windows machine or CI.
 
 **Platform dashboards (same UI as the browser):** **`windows/`** (build a `.exe` via [`windows_app/README_BUILD.md`](windows_app/README_BUILD.md)), **`android/`** (Gradle / Android Studio), **`apple/`** (Xcode — Mac, iPhone, iPad). Batch and shell helpers: [WINDOWS.md](WINDOWS.md), `scripts/windows/*.bat`.
 

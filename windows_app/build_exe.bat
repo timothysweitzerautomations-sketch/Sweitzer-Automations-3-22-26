@@ -18,7 +18,7 @@ if exist "windows\icon.ico" (
   echo No windows\icon.ico or windows_app\icon.ico — optional. See README_ICON.txt
 )
 
-pyinstaller --noconfirm --onefile --windowed --name SweitzerAutomations ^
+pyinstaller --noconfirm --onefile --windowed --name SweitzerAutomations-3-22-26 ^
   --paths . ^
   --add-data "revenue_pulse;revenue_pulse" ^
   --hidden-import=revenue_pulse ^
