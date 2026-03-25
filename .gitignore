@@ -16,6 +16,12 @@ venv/
 # Generated outputs (keep if you want; remove this line to track outputs)
 outputs/
 
+# Local demo recordings (large binaries; optional on your machine only)
+demo videos/
+
+# Copied from revenue_pulse/ by scripts/sync_chrome_extension.sh — do not edit here
+chrome_extension/revenue_pulse/
+
 # Android
 android/.gradle/
 android/**/build/

@@ -28,8 +28,14 @@ jobs:
         run: python -c "from main import build_crew; c = build_crew(); print('tasks:', len(c.tasks))"
       - name: Linux helper scripts (syntax)
         run: bash -n linux/run_dashboards.sh linux/serve_dashboards.sh
+      - name: Sync Chrome extension assets
+        run: bash scripts/sync_chrome_extension.sh
       - name: Chrome extension manifest (JSON)
         run: python3 -c "import json; json.load(open('chrome_extension/manifest.json'))"
+      - name: Chrome extension bundled dashboards
+        run: |
+          test -f chrome_extension/revenue_pulse/index.html
+          test -f chrome_extension/revenue_pulse/flip_tracker.html
 
   android:
     runs-on: ubuntu-latest
