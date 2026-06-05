@@ -4,6 +4,11 @@ Sweitzer Automations 3-22-26 — Android app
 This folder is a small Android Studio project that wraps **Revenue Pulse** and the **Flip profit tracker**
 (the same `revenue_pulse/` HTML dashboards as the Windows launcher).
 
+Note for the AI Resume Builder: this Android wrapper does not yet package the resume builder app.
+Before publishing a resume builder app in Google Play Console, see
+`../docs/google_play_resume_builder.md` for package-name, privacy, Data safety, and mobile
+architecture decisions.
+
 What it does
 ------------
 

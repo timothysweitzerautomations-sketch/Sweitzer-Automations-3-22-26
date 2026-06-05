@@ -125,6 +125,7 @@ Local-first resume coaching app with a browser UI, stdlib Python API server, and
 
 - **Optional local AI:** start Ollama separately. The server calls `http://127.0.0.1:11434/api/generate` using `RESUME_BUILDER_MODEL` (or `OLLAMA_MODEL`) when available. If Ollama is unavailable, the deterministic resume engine still returns a readiness score, keyword gaps, suggested bullet rewrites, and a reusable AI prompt.
 - **Disable AI calls:** `RESUME_BUILDER_DISABLE_OLLAMA=1 python3 -m resume_builder.server`
+- **Google Play planning:** see [`docs/google_play_resume_builder.md`](docs/google_play_resume_builder.md) before packaging this as a Play Console app. The current Android wrapper does not yet package the resume builder, and Play Data safety answers depend on whether resume text stays on-device or is sent to a hosted AI backend.
 - **Core logic:** `resume_builder/resume_engine.py`
 - **UI/server:** `resume_builder/index.html`, `resume_builder/server.py`
 
