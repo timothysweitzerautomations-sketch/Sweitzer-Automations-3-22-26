@@ -97,9 +97,11 @@ SECTION_HINTS = {
     "education": ("education", "certification", "certifications"),
 }
 
+SHORT_TECH_TERMS = frozenset({"ai", "bi", "ci", "cd", "go", "ml", "qa", "r", "sql", "ui", "ux"})
+
 
 def _words(text: str) -> list[str]:
-    return re.findall(r"[a-z][a-z0-9+#.-]{2,}", text.lower())
+    return re.findall(r"[a-z][a-z0-9+#.-]{1,}", text.lower())
 
 
 def _shorten(text: str, limit: int = 4000) -> str:
@@ -116,7 +118,7 @@ def split_bullets(text: str) -> list[str]:
         line = raw_line.strip()
         if not line:
             continue
-        line = re.sub(r"^[\-*•\u2022\d.)\s]+", "", line).strip()
+        line = re.sub(r"^[\-*\u2022\d.)\s]+", "", line).strip()
         if len(line) >= 12:
             bullets.append(line)
     return bullets
@@ -142,7 +144,9 @@ def extract_keywords(job_description: str, limit: int = 14) -> list[str]:
     counts = Counter(
         word
         for word in words
-        if len(word) >= 4 and word not in STOPWORDS and not word.isdigit()
+        if (len(word) >= 4 or word in SHORT_TECH_TERMS)
+        and word not in STOPWORDS
+        and not word.isdigit()
     )
     ranked = sorted(counts.items(), key=lambda item: (-item[1], item[0]))
     return [word for word, _ in ranked[:limit]]
