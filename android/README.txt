@@ -1,7 +1,8 @@
 Sweitzer Automations 3-22-26 — Android app
 ===================================
 
-This folder is a small Android Studio project that wraps **Revenue Pulse** and the **Flip profit tracker**
+This folder is a small Android Studio project that wraps **Revenue Pulse**, the **Flip profit tracker**,
+and the **Infotainment video player**
 (the same `revenue_pulse/` HTML dashboards as the Windows launcher).
 
 What it does
@@ -9,7 +10,8 @@ What it does
 
 - On each build, Gradle copies `../revenue_pulse/` into `app/src/main/assets/revenue_pulse/`.
 - The app opens a full-screen WebView on **Revenue Pulse** (`index.html`).
-- Use the in-page link **Flip profit tracker →** to open the flip dashboard (same as on the web).
+- Use the in-page links to open the flip dashboard or video player (same as on the web).
+- The video player supports local video selection and fullscreen through Android WebView.
 - **Load sample** buttons work: assets are served via `WebViewAssetLoader` (HTTPS to app assets) so `fetch()` can load the sample CSVs.
 - Chart.js loads from the CDN — **Internet permission** is required for charts.
 

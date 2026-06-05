@@ -20,7 +20,7 @@ This directory is the **full** project: `main.py`, `config/`, `tools/`, `revenue
 
 **Local (optional):** `bash scripts/verify_local_platforms.sh` — runs `demo_video_ready.sh` plus Android/Xcode **only if** the Android SDK and full **Xcode** (not only Command Line Tools) are installed. Windows `.exe` still needs a Windows machine or CI.
 
-**Platform dashboards (same UI as the browser):** **`windows/`** (build a `.exe` via [`windows_app/README_BUILD.md`](windows_app/README_BUILD.md)), **`android/`** (Gradle / Android Studio), **`apple/`** (Xcode — Mac, iPhone, iPad), **`linux/`** ([LINUX.md](LINUX.md) — Tk launcher or browser-only server), **`chrome_extension/`** ([CHROME.md](CHROME.md) — bundled dashboards in Chrome). Batch and shell helpers: [WINDOWS.md](WINDOWS.md), `scripts/windows/*.bat`.
+**Platform dashboards (same UI as the browser):** **`windows/`** (build a `.exe` via [`windows_app/README_BUILD.md`](windows_app/README_BUILD.md)), **`android/`** (Gradle / Android Studio), **`apple/`** (Xcode — Mac, iPhone, iPad), **`linux/`** ([LINUX.md](LINUX.md) — Tk launcher or browser-only server), **`chrome_extension/`** ([CHROME.md](CHROME.md) — bundled dashboards and video player in Chrome). Batch and shell helpers: [WINDOWS.md](WINDOWS.md), `scripts/windows/*.bat`.
 
 **macOS setup (optional):** from the repo root, run **`bash scripts/setup_platform_apps.sh`** — creates Desktop aliases **`Sweitzer Automations 3-22-26 - Project`** (whole repo), **`… - Windows`**, **`… - Android`**, **`… - Apple`**, regenerates shared launcher icons (`tools/generate_brand_icons.py`), and writes **`android/local.properties`** if `~/Library/Android/sdk` exists. Re-run after moving the project folder.
 
@@ -111,6 +111,16 @@ CSV expectations: header row; a column the app can treat as **transaction amount
 
 **Not tax or legal advice.** General inventory / overhead lines (not per-sale) are still outside this file — only **per-line sale** economics here.
 
+## 4. Infotainment video player
+
+Touch-friendly browser/WebView player for local video files and streaming URLs.
+
+- **Same UI server as above.** Open `http://localhost:8080/video_player.html` (or the link from Revenue Pulse / Flip tracker).
+- Choose local videos with **Choose videos**, or paste an `http://` / `https://` video URL.
+- Supports playlist controls and fullscreen where the browser, Android WebView, or WKWebView allows it.
+
+Use playback only when parked or where it is legal and safe; car platforms may restrict video while driving.
+
 ## Automated tests (pytest)
 
 From the project root, with dev deps installed:
@@ -144,7 +154,7 @@ Add new files under `tests/` following the same pattern.
 - `main.py` — CrewAI entrypoint; registers tools for agents
 - `config/` — `agents.yaml`, `tasks.yaml`
 - `tools/` — `custom_tool.py`, `revenue_analytics.py`, `flip_ledger.py`
-- `revenue_pulse/` — `index.html` / `index.js`, `flip_tracker.html` / `flip_tracker.js`, `vendor/chart.umd.min.js`, `revenue_engine.py`, `flip_engine.py`, sample CSVs
+- `revenue_pulse/` — `index.html`, `flip_tracker.html`, `video_player.html`, `revenue_engine.py`, `flip_engine.py`, sample CSVs
 - `tests/` — pytest suite; `requirements-dev.txt` — pytest only
 - `docs/video/` — demo recording prep, Gemini handoff text, talking-point cue cards
 - `linux/` — [LINUX.md](LINUX.md) user-friendly dashboard launchers
