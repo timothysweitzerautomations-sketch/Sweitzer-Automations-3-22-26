@@ -2,6 +2,6 @@
 <resources>
     <style name="Theme.SweitzerAutomations" parent="Theme.AppCompat.NoActionBar">
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">#0c1117</item>
+        <item name="android:navigationBarColor">#07111f</item>
     </style>
 </resources>

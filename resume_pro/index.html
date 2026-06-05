@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Resume Pro AI</title>
+    <style>
+      :root {
+        --bg: #07111f;
+        --panel: #0f1b2d;
+        --panel-soft: #14243a;
+        --card: #ffffff;
+        --card-muted: #f4f7fb;
+        --border: #243754;
+        --text: #edf4ff;
+        --muted: #a7b7cf;
+        --ink: #162033;
+        --ink-muted: #667085;
+        --accent: #3b82f6;
+        --accent-dark: #1d4ed8;
+        --success: #22c55e;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --shadow: 0 24px 70px rgba(3, 7, 18, 0.28);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Helvetica, Arial, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 18% -8%, rgba(59, 130, 246, 0.4), transparent 36rem),
+          radial-gradient(circle at 85% 3%, rgba(34, 197, 94, 0.16), transparent 34rem),
+          linear-gradient(180deg, #07111f 0%, #0a1627 58%, #07111f 100%);
+      }
+
+      button,
+      input,
+      textarea,
+      select {
+        font: inherit;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      .app-shell {
+        width: min(1120px, 100%);
+        margin: 0 auto;
+        padding: 1rem;
+      }
+
+      .hero {
+        padding: 1.25rem 0.25rem 1rem;
+      }
+
+      .brand-row,
+      .hero-actions,
+      .document-actions,
+      .usage-row {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+
+      .logo {
+        width: 48px;
+        height: 48px;
+        display: grid;
+        place-items: center;
+        border-radius: 15px;
+        color: #fff;
+        font-weight: 800;
+        letter-spacing: -0.08em;
+        background: linear-gradient(135deg, var(--accent), #60a5fa 54%, var(--success));
+        box-shadow: 0 14px 34px rgba(59, 130, 246, 0.35);
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        margin-bottom: 0.4rem;
+        font-size: clamp(2rem, 9vw, 4.5rem);
+        line-height: 0.95;
+        letter-spacing: -0.07em;
+      }
+
+      .eyebrow {
+        margin: 0;
+        color: #bcd2f4;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+      }
+
+      .subtitle {
+        max-width: 720px;
+        color: var(--muted);
+        line-height: 1.6;
+        font-size: 1.02rem;
+        margin-bottom: 1rem;
+      }
+
+      .nav-tabs {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        gap: 0.55rem;
+        overflow-x: auto;
+        padding: 0.75rem 0.1rem;
+        margin: 0 -0.1rem 1rem;
+        backdrop-filter: blur(16px);
+      }
+
+      .tab-button {
+        flex: 0 0 auto;
+        border: 1px solid rgba(167, 183, 207, 0.22);
+        background: rgba(15, 27, 45, 0.84);
+        color: var(--muted);
+        border-radius: 999px;
+        padding: 0.62rem 0.9rem;
+        font-weight: 700;
+      }
+
+      .tab-button.active {
+        color: #fff;
+        border-color: rgba(96, 165, 250, 0.75);
+        background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      }
+
+      .grid {
+        display: grid;
+        gap: 1rem;
+      }
+
+      @media (min-width: 920px) {
+        .two-col {
+          grid-template-columns: minmax(0, 0.92fr) minmax(360px, 1fr);
+          align-items: start;
+        }
+      }
+
+      .panel {
+        border: 1px solid rgba(167, 183, 207, 0.16);
+        border-radius: 24px;
+        background: rgba(15, 27, 45, 0.88);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .panel-pad {
+        padding: 1.05rem;
+      }
+
+      @media (min-width: 680px) {
+        .panel-pad {
+          padding: 1.35rem;
+        }
+      }
+
+      .card {
+        color: var(--ink);
+        background: var(--card);
+        border-radius: 22px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .card-pad {
+        padding: 1.1rem;
+      }
+
+      @media (min-width: 680px) {
+        .card-pad {
+          padding: 1.5rem;
+        }
+      }
+
+      .section-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 0.8rem;
+      }
+
+      .section-title h2,
+      .section-title h3 {
+        margin-bottom: 0.2rem;
+      }
+
+      .section-title p,
+      .form-hint,
+      .small-copy {
+        color: var(--muted);
+        line-height: 1.45;
+        margin-bottom: 0;
+      }
+
+      .form-hint {
+        font-size: 0.9rem;
+      }
+
+      .field-grid {
+        display: grid;
+        gap: 0.8rem;
+      }
+
+      @media (min-width: 700px) {
+        .field-grid.two {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      label {
+        display: grid;
+        gap: 0.35rem;
+        color: #dbe8fb;
+        font-size: 0.92rem;
+        font-weight: 700;
+      }
+
+      input,
+      textarea,
+      select {
+        width: 100%;
+        border: 1px solid rgba(167, 183, 207, 0.22);
+        border-radius: 14px;
+        color: var(--text);
+        background: rgba(7, 17, 31, 0.84);
+        padding: 0.82rem 0.9rem;
+        outline: none;
+      }
+
+      textarea {
+        min-height: 112px;
+        resize: vertical;
+      }
+
+      input:focus,
+      textarea:focus,
+      select:focus {
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+      }
+
+      .button {
+        border: 0;
+        border-radius: 14px;
+        padding: 0.78rem 1rem;
+        font-weight: 800;
+        color: #fff;
+        background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+        box-shadow: 0 16px 32px rgba(59, 130, 246, 0.25);
+      }
+
+      .button.secondary {
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.09);
+        border: 1px solid rgba(167, 183, 207, 0.18);
+        box-shadow: none;
+      }
+
+      .button.success {
+        background: linear-gradient(135deg, var(--success), #16a34a);
+      }
+
+      .button.warning {
+        background: linear-gradient(135deg, var(--warning), #d97706);
+      }
+
+      .output {
+        min-height: 420px;
+      }
+
+      .document {
+        color: var(--ink);
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 18px;
+        padding: 1.15rem;
+        line-height: 1.55;
+        white-space: pre-wrap;
+      }
+
+      .document.empty {
+        display: grid;
+        place-items: center;
+        min-height: 310px;
+        text-align: center;
+        color: var(--ink-muted);
+        background: var(--card-muted);
+        border-style: dashed;
+      }
+
+      .document strong {
+        color: #0f172a;
+      }
+
+      .document-actions {
+        justify-content: flex-start;
+        margin-top: 0.9rem;
+      }
+
+      .pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 0.75rem 0 0;
+      }
+
+      .pill {
+        border-radius: 999px;
+        border: 1px solid rgba(167, 183, 207, 0.22);
+        background: rgba(255, 255, 255, 0.07);
+        color: var(--muted);
+        padding: 0.45rem 0.7rem;
+        font-size: 0.86rem;
+        font-weight: 700;
+      }
+
+      .plan-grid {
+        display: grid;
+        gap: 0.8rem;
+      }
+
+      @media (min-width: 760px) {
+        .plan-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      .plan {
+        border: 1px solid rgba(167, 183, 207, 0.18);
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.06);
+        padding: 1rem;
+      }
+
+      .plan.highlight {
+        border-color: rgba(34, 197, 94, 0.65);
+        background: linear-gradient(180deg, rgba(34, 197, 94, 0.16), rgba(255, 255, 255, 0.06));
+      }
+
+      .plan ul,
+      .tips ul {
+        padding-left: 1.2rem;
+        margin-bottom: 0;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .history-list {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .history-item {
+        border: 1px solid rgba(167, 183, 207, 0.18);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.06);
+        padding: 0.9rem;
+      }
+
+      .history-item h3 {
+        margin-bottom: 0.25rem;
+      }
+
+      .history-item p {
+        color: var(--muted);
+        margin-bottom: 0.65rem;
+      }
+
+      .toast {
+        position: fixed;
+        right: 1rem;
+        bottom: 1rem;
+        max-width: calc(100% - 2rem);
+        padding: 0.85rem 1rem;
+        border-radius: 14px;
+        color: #082f1b;
+        background: #bbf7d0;
+        box-shadow: var(--shadow);
+        transform: translateY(140%);
+        opacity: 0;
+        transition: transform 180ms ease, opacity 180ms ease;
+        z-index: 20;
+        font-weight: 800;
+      }
+
+      .toast.show {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .screen {
+        display: none;
+      }
+
+      .screen.active {
+        display: block;
+      }
+
+      .usage-card {
+        margin-top: 1rem;
+        border: 1px solid rgba(167, 183, 207, 0.18);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.06);
+        padding: 0.9rem;
+      }
+
+      .meter {
+        height: 9px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: rgba(167, 183, 207, 0.2);
+      }
+
+      .meter span {
+        display: block;
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, var(--success), var(--accent));
+      }
+
+      .resume-template {
+        font-size: 0.92rem;
+      }
+
+      .resume-template h2 {
+        color: #0f172a;
+        border-bottom: 2px solid #dbeafe;
+        padding-bottom: 0.25rem;
+        margin: 1rem 0 0.45rem;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .resume-template .resume-name {
+        margin: 0;
+        font-size: 1.45rem;
+        letter-spacing: -0.03em;
+      }
+
+      .resume-template .resume-contact {
+        color: var(--ink-muted);
+        margin: 0.25rem 0 0.9rem;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      @media print {
+        body {
+          background: #fff;
+          color: #000;
+        }
+
+        .hero,
+        .nav-tabs,
+        .panel,
+        .document-actions,
+        .toast {
+          display: none !important;
+        }
+
+        .app-shell {
+          padding: 0;
+        }
+
+        .card {
+          box-shadow: none;
+          border-radius: 0;
+        }
+
+        .screen,
+        .screen.active {
+          display: block;
+        }
+
+        .screen:not(.print-target) {
+          display: none;
+        }
+
+        .document {
+          border: 0;
+          padding: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero">
+        <div class="brand-row">
+          <div class="logo" aria-hidden="true">RP</div>
+          <div>
+            <p class="eyebrow">Resume Pro AI</p>
+            <h1>Build a job-ready resume in minutes.</h1>
+          </div>
+        </div>
+        <p class="subtitle">
+          Create professional resumes, cover letters, stronger resume bullets, and interview
+          answers from simple guided forms. This first version keeps everything on your device.
+        </p>
+        <div class="hero-actions">
+          <button class="button" data-tab="resume">Create Resume</button>
+          <button class="button secondary" data-tab="cover">Write Cover Letter</button>
+          <button class="button secondary" data-tab="upgrade">View Pro Plan</button>
+        </div>
+      </header>
+
+      <nav class="nav-tabs" aria-label="Resume Pro AI tools">
+        <button class="tab-button active" data-tab="resume">Resume</button>
+        <button class="tab-button" data-tab="cover">Cover letter</button>
+        <button class="tab-button" data-tab="bullet">Improve bullet</button>
+        <button class="tab-button" data-tab="interview">Interview</button>
+        <button class="tab-button" data-tab="saved">Saved</button>
+        <button class="tab-button" data-tab="upgrade">Upgrade</button>
+      </nav>
+
+      <section id="resume" class="screen active print-target">
+        <div class="grid two-col">
+          <form class="panel panel-pad" id="resumeForm">
+            <div class="section-title">
+              <div>
+                <h2>AI Resume Builder</h2>
+                <p>Fill out what you know. Resume Pro AI will turn it into a polished draft.</p>
+              </div>
+            </div>
+
+            <div class="field-grid two">
+              <label>
+                Full name
+                <input id="fullName" autocomplete="name" placeholder="Jordan Taylor" required />
+              </label>
+              <label>
+                Desired job title
+                <input id="targetTitle" placeholder="Customer Service Representative" required />
+              </label>
+              <label>
+                Email
+                <input id="email" type="email" autocomplete="email" placeholder="you@email.com" />
+              </label>
+              <label>
+                Phone
+                <input id="phone" autocomplete="tel" placeholder="(555) 123-4567" />
+              </label>
+              <label>
+                City and state
+                <input id="location" autocomplete="address-level2" placeholder="Atlanta, GA" />
+              </label>
+              <label>
+                Experience level
+                <select id="experienceLevel">
+                  <option>No experience</option>
+                  <option selected>Entry-level</option>
+                  <option>Mid-level</option>
+                  <option>Career changer</option>
+                  <option>Senior</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="field-grid">
+              <label>
+                Work background
+                <textarea
+                  id="workHistory"
+                  placeholder="Example: Cashier at Value Mart for 2 years. Helped customers, handled payments, stocked shelves, trained new team members."
+                  required
+                ></textarea>
+              </label>
+              <label>
+                Skills
+                <textarea
+                  id="skills"
+                  placeholder="Customer service, cash handling, inventory, scheduling, Microsoft Office"
+                  required
+                ></textarea>
+              </label>
+              <label>
+                Education or certifications
+                <textarea
+                  id="education"
+                  placeholder="High school diploma, GED, college, certificate, training program"
+                ></textarea>
+              </label>
+              <label>
+                Tone
+                <select id="resumeTone">
+                  <option selected>Professional</option>
+                  <option>Friendly</option>
+                  <option>Confident</option>
+                  <option>ATS-friendly</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="usage-card">
+              <div class="usage-row">
+                <strong id="usageText">3 free generations available</strong>
+                <button type="button" class="button secondary" data-tab="upgrade">Upgrade</button>
+              </div>
+              <div class="meter" aria-hidden="true"><span id="usageMeter"></span></div>
+              <p class="form-hint">
+                Prototype limit: 3 free generations. Payments are not connected yet.
+              </p>
+            </div>
+
+            <div class="hero-actions" style="margin-top: 1rem">
+              <button class="button" type="submit">Generate My Resume</button>
+              <button class="button secondary" type="button" id="fillSample">Try Sample</button>
+            </div>
+          </form>
+
+          <article class="card card-pad output">
+            <div class="section-title">
+              <div>
+                <h2>Your resume draft</h2>
+                <p class="small-copy">Edit your inputs and regenerate until it sounds right.</p>
+              </div>
+            </div>
+            <div id="resumeOutput" class="document empty">
+              <div>
+                <strong>Your generated resume will appear here.</strong>
+                <p>Start with the form on the left.</p>
+              </div>
+            </div>
+            <div class="document-actions">
+              <button class="button secondary" type="button" data-copy="resumeOutput">Copy</button>
+              <button class="button secondary" type="button" data-save="resume">Save</button>
+              <button class="button secondary" type="button" data-print="resume">Export PDF</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="cover" class="screen">
+        <div class="grid two-col">
+          <form class="panel panel-pad" id="coverForm">
+            <div class="section-title">
+              <div>
+                <h2>Cover Letter Generator</h2>
+                <p>Customize a short cover letter for each job posting.</p>
+              </div>
+            </div>
+            <div class="field-grid two">
+              <label>
+                Job title
+                <input id="coverJobTitle" placeholder="Warehouse Associate" required />
+              </label>
+              <label>
+                Company name
+                <input id="companyName" placeholder="Bright Logistics" required />
+              </label>
+            </div>
+            <div class="field-grid">
+              <label>
+                Job description or keywords
+                <textarea
+                  id="jobDescription"
+                  placeholder="Paste the job requirements or list important keywords from the posting."
+                  required
+                ></textarea>
+              </label>
+              <label>
+                Your relevant experience
+                <textarea
+                  id="applicantExperience"
+                  placeholder="Tell us about your work history, strengths, and why you fit this job."
+                  required
+                ></textarea>
+              </label>
+              <label>
+                Tone
+                <select id="coverTone">
+                  <option selected>Professional</option>
+                  <option>Friendly</option>
+                  <option>Confident</option>
+                  <option>Short and direct</option>
+                </select>
+              </label>
+            </div>
+            <div class="hero-actions" style="margin-top: 1rem">
+              <button class="button" type="submit">Generate Cover Letter</button>
+            </div>
+          </form>
+
+          <article class="card card-pad output">
+            <div class="section-title">
+              <div>
+                <h2>Your cover letter</h2>
+                <p class="small-copy">Keep it truthful, focused, and under one page.</p>
+              </div>
+            </div>
+            <div id="coverOutput" class="document empty">
+              <div>
+                <strong>Your generated cover letter will appear here.</strong>
+                <p>Paste details from a job you want.</p>
+              </div>
+            </div>
+            <div class="document-actions">
+              <button class="button secondary" type="button" data-copy="coverOutput">Copy</button>
+              <button class="button secondary" type="button" data-save="cover letter">Save</button>
+              <button class="button secondary" type="button" data-print="cover">Export PDF</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="bullet" class="screen">
+        <div class="grid two-col">
+          <form class="panel panel-pad" id="bulletForm">
+            <div class="section-title">
+              <div>
+                <h2>Resume Bullet Improver</h2>
+                <p>Turn plain job duties into stronger, ATS-friendly resume bullets.</p>
+              </div>
+            </div>
+            <div class="field-grid">
+              <label>
+                Current bullet
+                <textarea
+                  id="weakBullet"
+                  placeholder="Worked with customers and stocked shelves."
+                  required
+                ></textarea>
+              </label>
+              <label>
+                Target job
+                <input id="bulletTarget" placeholder="Retail Sales Associate" />
+              </label>
+              <label>
+                Improvement style
+                <select id="bulletStyle">
+                  <option selected>Make it more professional</option>
+                  <option>Add measurable impact</option>
+                  <option>Make it shorter</option>
+                  <option>Make it stronger for ATS</option>
+                </select>
+              </label>
+            </div>
+            <div class="hero-actions" style="margin-top: 1rem">
+              <button class="button" type="submit">Improve Bullet</button>
+            </div>
+          </form>
+
+          <article class="card card-pad output">
+            <div class="section-title">
+              <div>
+                <h2>Improved bullet</h2>
+                <p class="small-copy">Use numbers only when they are accurate.</p>
+              </div>
+            </div>
+            <div id="bulletOutput" class="document empty">
+              <div>
+                <strong>Your improved bullet will appear here.</strong>
+                <p>Paste a bullet that feels too simple.</p>
+              </div>
+            </div>
+            <div class="document-actions">
+              <button class="button secondary" type="button" data-copy="bulletOutput">Copy</button>
+              <button class="button secondary" type="button" data-save="resume bullet">Save</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="interview" class="screen">
+        <div class="grid two-col">
+          <form class="panel panel-pad" id="interviewForm">
+            <div class="section-title">
+              <div>
+                <h2>Interview Answer Helper</h2>
+                <p>Practice clear answers before the interview.</p>
+              </div>
+            </div>
+            <div class="field-grid">
+              <label>
+                Interview question
+                <select id="interviewQuestion">
+                  <option>Tell me about yourself.</option>
+                  <option>Why should we hire you?</option>
+                  <option>What are your strengths?</option>
+                  <option>What is one weakness you are improving?</option>
+                  <option>Why do you want this job?</option>
+                  <option>Describe a challenge you overcame.</option>
+                </select>
+              </label>
+              <label>
+                Job title
+                <input id="interviewJobTitle" placeholder="Medical Receptionist" required />
+              </label>
+              <label>
+                Your strengths or background
+                <textarea
+                  id="interviewStrengths"
+                  placeholder="Reliable, friendly, organized, 1 year of front desk experience, comfortable using computers."
+                  required
+                ></textarea>
+              </label>
+            </div>
+            <div class="hero-actions" style="margin-top: 1rem">
+              <button class="button" type="submit">Generate Answer</button>
+            </div>
+          </form>
+
+          <article class="card card-pad output">
+            <div class="section-title">
+              <div>
+                <h2>Practice answer</h2>
+                <p class="small-copy">Read it out loud and make it sound like you.</p>
+              </div>
+            </div>
+            <div id="interviewOutput" class="document empty">
+              <div>
+                <strong>Your interview answer will appear here.</strong>
+                <p>Choose a question and add a little background.</p>
+              </div>
+            </div>
+            <div class="document-actions">
+              <button class="button secondary" type="button" data-copy="interviewOutput">Copy</button>
+              <button class="button secondary" type="button" data-save="interview answer">Save</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="saved" class="screen">
+        <div class="panel panel-pad">
+          <div class="section-title">
+            <div>
+              <h2>Saved Documents</h2>
+              <p>Resume Pro AI stores saved drafts locally on this device.</p>
+            </div>
+            <button class="button secondary" type="button" id="clearHistory">Clear all</button>
+          </div>
+          <div id="historyList" class="history-list"></div>
+        </div>
+      </section>
+
+      <section id="upgrade" class="screen">
+        <div class="panel panel-pad">
+          <div class="section-title">
+            <div>
+              <h2>Upgrade plan</h2>
+              <p>
+                The payment flow is a placeholder for the MVP. Google Play Billing can be connected
+                when the app is ready for store testing.
+              </p>
+            </div>
+          </div>
+          <div class="plan-grid">
+            <div class="plan">
+              <h3>Free</h3>
+              <p><strong>$0</strong></p>
+              <ul>
+                <li>3 draft generations</li>
+                <li>Resume builder</li>
+                <li>Copy results</li>
+                <li>Local saved drafts</li>
+              </ul>
+            </div>
+            <div class="plan highlight">
+              <h3>Resume Pro</h3>
+              <p><strong>$4.99/month</strong> or <strong>$29.99/year</strong></p>
+              <ul>
+                <li>Unlimited AI generations</li>
+                <li>PDF export</li>
+                <li>Cover letters and interview answers</li>
+                <li>Premium templates</li>
+                <li>No ads</li>
+              </ul>
+            </div>
+          </div>
+          <div class="tips panel-pad">
+            <h3>Next app milestone</h3>
+            <ul>
+              <li>Connect a real AI API or server endpoint for higher quality generations.</li>
+              <li>Add Google Play Billing for monthly, yearly, and launch lifetime plans.</li>
+              <li>Add multiple resume templates and an ATS keyword checker.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      const STORAGE_KEY = "resumeProAiDocuments";
+      const USAGE_KEY = "resumeProAiUsage";
+      const FREE_LIMIT = 3;
+
+      const state = {
+        latest: {
+          resume: "",
+          cover: "",
+          bullet: "",
+          interview: "",
+        },
+      };
+
+      const $ = (id) => document.getElementById(id);
+
+      function value(id) {
+        return ($(id).value || "").trim();
+      }
+
+      function sentenceCase(text) {
+        if (!text) return "";
+        return text.charAt(0).toUpperCase() + text.slice(1);
+      }
+
+      function splitList(text) {
+        return text
+          .split(/[\n,]+/)
+          .map((item) => item.trim())
+          .filter(Boolean);
+      }
+
+      function getUsage() {
+        return Number(localStorage.getItem(USAGE_KEY) || "0");
+      }
+
+      function setUsage(count) {
+        localStorage.setItem(USAGE_KEY, String(count));
+        renderUsage();
+      }
+
+      function canGenerate() {
+        if (getUsage() < FREE_LIMIT) return true;
+        showToast("Free generation limit reached. View the Pro plan to continue.");
+        switchTab("upgrade");
+        return false;
+      }
+
+      function markGenerated() {
+        setUsage(Math.min(FREE_LIMIT, getUsage() + 1));
+      }
+
+      function renderUsage() {
+        const used = getUsage();
+        const left = Math.max(FREE_LIMIT - used, 0);
+        $("usageText").textContent =
+          left === 1 ? "1 free generation available" : `${left} free generations available`;
+        $("usageMeter").style.width = `${(used / FREE_LIMIT) * 100}%`;
+      }
+
+      function showToast(message) {
+        const toast = $("toast");
+        toast.textContent = message;
+        toast.classList.add("show");
+        window.clearTimeout(showToast.timer);
+        showToast.timer = window.setTimeout(() => toast.classList.remove("show"), 2400);
+      }
+
+      function switchTab(tabId) {
+        document.querySelectorAll(".screen").forEach((screen) => {
+          screen.classList.toggle("active", screen.id === tabId);
+          screen.classList.toggle("print-target", screen.id === tabId);
+        });
+        document.querySelectorAll(".tab-button").forEach((button) => {
+          button.classList.toggle("active", button.dataset.tab === tabId);
+        });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function setDocument(targetId, html, plainText, key) {
+        const target = $(targetId);
+        target.classList.remove("empty");
+        target.innerHTML = html;
+        state.latest[key] = plainText;
+      }
+
+      function createResume() {
+        const name = value("fullName");
+        const targetTitle = value("targetTitle");
+        const email = value("email");
+        const phone = value("phone");
+        const location = value("location");
+        const level = value("experienceLevel");
+        const work = value("workHistory");
+        const skills = splitList(value("skills"));
+        const education = value("education") || "Education and training available upon request";
+        const tone = value("resumeTone");
+        const topSkills = skills.slice(0, 6);
+        const contact = [email, phone, location].filter(Boolean).join(" | ");
+        const skillPhrase = topSkills.length ? topSkills.join(", ") : "relevant workplace skills";
+        const background = work.replace(/\s+/g, " ");
+
+        const summary =
+          `${level} ${targetTitle} candidate with hands-on background in ${skillPhrase}. ` +
+          `Known for being dependable, coachable, and focused on delivering quality work. ` +
+          `Brings practical experience from ${background.toLowerCase()} ` +
+          `and is ready to contribute to a team that values professionalism and growth.`;
+
+        const bullets = buildResumeBullets(work, targetTitle, tone, skills);
+        const plainText = [
+          name.toUpperCase(),
+          contact,
+          "",
+          "PROFESSIONAL SUMMARY",
+          summary,
+          "",
+          "CORE SKILLS",
+          topSkills.join(" | "),
+          "",
+          "WORK EXPERIENCE",
+          bullets.map((bullet) => `- ${bullet}`).join("\n"),
+          "",
+          "EDUCATION",
+          education,
+        ].join("\n");
+
+        const html = `
+          <div class="resume-template">
+            <h1 class="resume-name">${escapeHtml(name)}</h1>
+            <p class="resume-contact">${escapeHtml(contact || "Add contact details")}</p>
+            <h2>Professional Summary</h2>
+            <p>${escapeHtml(summary)}</p>
+            <h2>Core Skills</h2>
+            <p>${escapeHtml(topSkills.join(" | ") || "Add skills")}</p>
+            <h2>Work Experience</h2>
+            <ul>${bullets.map((bullet) => `<li>${escapeHtml(bullet)}</li>`).join("")}</ul>
+            <h2>Education</h2>
+            <p>${escapeHtml(education)}</p>
+          </div>
+        `;
+
+        return { html, plainText };
+      }
+
+      function buildResumeBullets(work, targetTitle, tone, skills) {
+        const parts = splitList(work).slice(0, 4);
+        const verbs = ["Supported", "Managed", "Assisted", "Coordinated", "Delivered"];
+        const focus = splitList(skills.join(", ")).slice(0, 3).join(", ");
+        const source = parts.length ? parts : [work];
+
+        return source.slice(0, 4).map((item, index) => {
+          const clean = item.replace(/[.]+$/, "");
+          if (tone === "ATS-friendly") {
+            return `${verbs[index] || "Supported"} ${clean.toLowerCase()} while applying ${focus || "job-relevant skills"} for ${targetTitle} responsibilities.`;
+          }
+          if (tone === "Confident") {
+            return `${verbs[index] || "Delivered"} dependable results in ${clean.toLowerCase()}, strengthening team performance and customer experience.`;
+          }
+          return `${verbs[index] || "Supported"} ${clean.toLowerCase()} in a fast-paced environment with attention to accuracy, service, and follow-through.`;
+        });
+      }
+
+      function createCoverLetter() {
+        const jobTitle = value("coverJobTitle");
+        const company = value("companyName");
+        const description = value("jobDescription");
+        const experience = value("applicantExperience");
+        const tone = value("coverTone");
+        const opening =
+          tone === "Short and direct"
+            ? `I am applying for the ${jobTitle} role at ${company}.`
+            : `I am excited to apply for the ${jobTitle} position at ${company}.`;
+        const keywords = splitList(description).slice(0, 4).join(", ");
+        const body =
+          `My background includes ${experience.replace(/\s+/g, " ").toLowerCase()}. ` +
+          `The role calls for ${keywords || "reliability, communication, and strong follow-through"}, ` +
+          `and I would bring a dependable work ethic, a professional attitude, and a willingness to learn quickly.`;
+        const close =
+          `Thank you for reviewing my application. I would welcome the opportunity to discuss how my skills can support ${company}.`;
+        return [opening, "", body, "", close, "", "Sincerely,"].join("\n");
+      }
+
+      function createBullet() {
+        const bullet = value("weakBullet").replace(/[.]+$/, "");
+        const target = value("bulletTarget") || "target role";
+        const style = value("bulletStyle");
+
+        if (style === "Add measurable impact") {
+          return `Improved ${bullet.toLowerCase()} by supporting daily goals, maintaining accuracy, and contributing to a more efficient team workflow.`;
+        }
+        if (style === "Make it shorter") {
+          return `${sentenceCase(bullet)} while maintaining quality, accuracy, and professional service.`;
+        }
+        if (style === "Make it stronger for ATS") {
+          return `Applied ${target} skills to ${bullet.toLowerCase()}, supporting customer service, task completion, communication, and operational accuracy.`;
+        }
+        return `Delivered professional support for ${bullet.toLowerCase()}, helping maintain smooth operations and a positive customer experience.`;
+      }
+
+      function createInterviewAnswer() {
+        const question = value("interviewQuestion");
+        const jobTitle = value("interviewJobTitle");
+        const strengths = value("interviewStrengths").replace(/\s+/g, " ");
+
+        if (question.includes("Tell me about yourself")) {
+          return `I am a dependable candidate interested in the ${jobTitle} role. My background includes ${strengths.toLowerCase()}. I enjoy learning quickly, helping the team stay organized, and giving customers or coworkers a positive experience. I am looking for a role where I can contribute, grow, and be reliable every day.`;
+        }
+        if (question.includes("Why should we hire")) {
+          return `You should hire me because I bring reliability, a strong work ethic, and relevant strengths such as ${strengths.toLowerCase()}. I take instructions seriously, communicate clearly, and focus on doing the job correctly. I would work hard to become someone the team can count on.`;
+        }
+        if (question.includes("weakness")) {
+          return `One area I am improving is being more confident when speaking up. I have been working on this by preparing ahead of time, asking better questions, and communicating sooner when I need clarification. This helps me stay accurate and support the team better.`;
+        }
+        return `For the ${jobTitle} role, I would answer by connecting my experience to the job. My strengths include ${strengths.toLowerCase()}. I try to stay dependable, organized, and focused on solutions. If hired, I would bring a positive attitude and a willingness to keep improving.`;
+      }
+
+      function getHistory() {
+        try {
+          return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function setHistory(items) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+        renderHistory();
+      }
+
+      function saveDocument(type, content) {
+        if (!content) {
+          showToast("Generate a draft before saving.");
+          return;
+        }
+        const items = getHistory();
+        items.unshift({
+          id: Date.now(),
+          type,
+          content,
+          createdAt: new Date().toLocaleString(),
+        });
+        setHistory(items.slice(0, 25));
+        showToast("Saved to this device.");
+      }
+
+      function renderHistory() {
+        const list = $("historyList");
+        const items = getHistory();
+        if (!items.length) {
+          list.innerHTML = `
+            <div class="document empty">
+              <div>
+                <strong>No saved drafts yet.</strong>
+                <p>Save resumes, cover letters, bullets, and interview answers here.</p>
+              </div>
+            </div>`;
+          return;
+        }
+        list.innerHTML = items
+          .map(
+            (item) => `
+            <article class="history-item">
+              <h3>${escapeHtml(titleCase(item.type))}</h3>
+              <p>${escapeHtml(item.createdAt)}</p>
+              <div class="document">${escapeHtml(item.content.slice(0, 700))}${
+                item.content.length > 700 ? "\n..." : ""
+              }</div>
+              <div class="document-actions">
+                <button class="button secondary" type="button" data-history-copy="${item.id}">Copy</button>
+                <button class="button secondary" type="button" data-history-delete="${item.id}">Delete</button>
+              </div>
+            </article>`
+          )
+          .join("");
+      }
+
+      function titleCase(text) {
+        return text.replace(/\b\w/g, (letter) => letter.toUpperCase());
+      }
+
+      function escapeHtml(text) {
+        return String(text)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      async function copyText(text) {
+        if (!text) {
+          showToast("Nothing to copy yet.");
+          return;
+        }
+        try {
+          await navigator.clipboard.writeText(text);
+          showToast("Copied.");
+        } catch (error) {
+          showToast("Copy is unavailable on this device.");
+        }
+      }
+
+      function printCurrent() {
+        window.print();
+      }
+
+      function bindEvents() {
+        document.querySelectorAll("[data-tab]").forEach((button) => {
+          button.addEventListener("click", () => switchTab(button.dataset.tab));
+        });
+
+        $("resumeForm").addEventListener("submit", (event) => {
+          event.preventDefault();
+          if (!canGenerate()) return;
+          const resume = createResume();
+          setDocument("resumeOutput", resume.html, resume.plainText, "resume");
+          markGenerated();
+          showToast("Resume draft generated.");
+        });
+
+        $("coverForm").addEventListener("submit", (event) => {
+          event.preventDefault();
+          if (!canGenerate()) return;
+          const letter = createCoverLetter();
+          setDocument("coverOutput", escapeHtml(letter), letter, "cover");
+          markGenerated();
+          showToast("Cover letter generated.");
+        });
+
+        $("bulletForm").addEventListener("submit", (event) => {
+          event.preventDefault();
+          if (!canGenerate()) return;
+          const bullet = createBullet();
+          setDocument("bulletOutput", escapeHtml(bullet), bullet, "bullet");
+          markGenerated();
+          showToast("Bullet improved.");
+        });
+
+        $("interviewForm").addEventListener("submit", (event) => {
+          event.preventDefault();
+          if (!canGenerate()) return;
+          const answer = createInterviewAnswer();
+          setDocument("interviewOutput", escapeHtml(answer), answer, "interview");
+          markGenerated();
+          showToast("Interview answer generated.");
+        });
+
+        document.querySelectorAll("[data-copy]").forEach((button) => {
+          button.addEventListener("click", () => {
+            const key = button.dataset.copy.replace("Output", "");
+            copyText(state.latest[key]);
+          });
+        });
+
+        document.querySelectorAll("[data-save]").forEach((button) => {
+          button.addEventListener("click", () => {
+            const type = button.dataset.save;
+            const key = type.includes("cover")
+              ? "cover"
+              : type.includes("bullet")
+                ? "bullet"
+                : type.includes("interview")
+                  ? "interview"
+                  : "resume";
+            saveDocument(type, state.latest[key]);
+          });
+        });
+
+        document.querySelectorAll("[data-print]").forEach((button) => {
+          button.addEventListener("click", printCurrent);
+        });
+
+        $("historyList").addEventListener("click", (event) => {
+          const copyId = event.target.dataset.historyCopy;
+          const deleteId = event.target.dataset.historyDelete;
+          if (copyId) {
+            const item = getHistory().find((entry) => String(entry.id) === copyId);
+            copyText(item && item.content);
+          }
+          if (deleteId) {
+            setHistory(getHistory().filter((entry) => String(entry.id) !== deleteId));
+            showToast("Deleted.");
+          }
+        });
+
+        $("clearHistory").addEventListener("click", () => {
+          setHistory([]);
+          showToast("Saved drafts cleared.");
+        });
+
+        $("fillSample").addEventListener("click", () => {
+          $("fullName").value = "Jordan Taylor";
+          $("targetTitle").value = "Customer Service Representative";
+          $("email").value = "jordan@email.com";
+          $("phone").value = "(555) 123-4567";
+          $("location").value = "Atlanta, GA";
+          $("experienceLevel").value = "Entry-level";
+          $("workHistory").value =
+            "Cashier at Value Mart for 2 years, helped customers, processed payments, stocked shelves, trained new employees";
+          $("skills").value =
+            "Customer service, cash handling, POS systems, inventory, teamwork, problem solving";
+          $("education").value = "High school diploma";
+          showToast("Sample resume details added.");
+        });
+      }
+
+      bindEvents();
+      renderUsage();
+      renderHistory();
+    </script>
+  </body>
+</html>

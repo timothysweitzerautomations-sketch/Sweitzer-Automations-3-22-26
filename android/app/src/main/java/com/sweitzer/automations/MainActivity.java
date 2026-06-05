@@ -14,8 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.webkit.WebViewAssetLoader;
 
 /**
- * Bundled Revenue Pulse + Flip tracker (revenue_pulse/) in assets.
- * WebViewAssetLoader serves them under https://appassets.androidplatform.net/… so fetch() works for sample CSVs.
+ * Bundled Resume Pro AI web app (resume_pro/) in assets.
+ * WebViewAssetLoader serves it under https://appassets.androidplatform.net/ so WebView APIs work.
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                         return getAssetLoader().shouldInterceptRequest(url);
                     }
                 });
-        webView.loadUrl("https://appassets.androidplatform.net/assets/revenue_pulse/index.html");
+        webView.loadUrl("https://appassets.androidplatform.net/assets/resume_pro/index.html");
     }
 
     @Override
