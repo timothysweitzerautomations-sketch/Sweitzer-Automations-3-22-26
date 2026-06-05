@@ -1,17 +1,18 @@
-Sweitzer Automations 3-22-26 — Android app
-===================================
+Resume Pro AI — Android app
+===========================
 
-This folder is a small Android Studio project that wraps **Revenue Pulse** and the **Flip profit tracker**
-(the same `revenue_pulse/` HTML dashboards as the Windows launcher).
+This folder is a small Android Studio project that wraps the bundled **Resume Pro AI**
+HTML prototype from `../resume_pro/`.
 
 What it does
 ------------
 
-- On each build, Gradle copies `../revenue_pulse/` into `app/src/main/assets/revenue_pulse/`.
-- The app opens a full-screen WebView on **Revenue Pulse** (`index.html`).
-- Use the in-page link **Flip profit tracker →** to open the flip dashboard (same as on the web).
-- **Load sample** buttons work: assets are served via `WebViewAssetLoader` (HTTPS to app assets) so `fetch()` can load the sample CSVs.
-- Chart.js loads from the CDN — **Internet permission** is required for charts.
+- On each build, Gradle copies `../resume_pro/` into `app/src/main/assets/resume_pro/`.
+- The app opens a full-screen WebView on **Resume Pro AI** (`index.html`).
+- The prototype includes guided flows for resume drafts, cover letters, resume bullet rewrites,
+  interview answers, local saved documents, and a placeholder upgrade plan.
+- Draft generation is currently local and template-driven. A real AI API/server and Google Play
+  Billing can be connected in a later milestone.
 
 Requirements
 ------------
@@ -37,12 +38,12 @@ Install on a device with USB debugging, or use **Run** in Android Studio.
 Icons
 -----
 
-Launcher icons live under `app/src/main/res/mipmap-*` (same “S” style as the Windows icon).
+Launcher icons live under `app/src/main/res/mipmap-*` (currently inherited from the previous app).
 Replace those PNGs if you want a custom look.
 
 Desktop shortcut
 ----------------
 
-**Sweitzer Automations 3-22-26 - Android** on your Desktop is an alias to this folder (create/update with `bash scripts/setup_platform_apps.sh`). Product name on device: **Sweitzer Automations 3-22-26**.
-
-Note: the Python JSON sample viewers from the Windows launcher are not in this app — use the dashboards in the WebView only.
+**Sweitzer Automations 3-22-26 - Android** on your Desktop is an alias to this folder
+(create/update with `bash scripts/setup_platform_apps.sh`). Product name on device:
+**Resume Pro AI**.

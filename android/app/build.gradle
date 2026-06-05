@@ -4,14 +4,14 @@ plugins {
 
 def repoRoot = rootProject.projectDir.parentFile
 
-tasks.register("copyRevenuePulseAssets", Copy) {
-    from(new File(repoRoot, "revenue_pulse"))
-    into(file("$projectDir/src/main/assets/revenue_pulse"))
+tasks.register("copyResumeProAssets", Copy) {
+    from(new File(repoRoot, "resume_pro"))
+    into(file("$projectDir/src/main/assets/resume_pro"))
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 tasks.named("preBuild").configure {
-    dependsOn(tasks.named("copyRevenuePulseAssets"))
+    dependsOn(tasks.named("copyResumeProAssets"))
 }
 
 android {
