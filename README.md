@@ -6,7 +6,7 @@
 
 **GitHub (public source of truth):** [github.com/timothysweitzerautomations-sketch/Sweitzer-Automations-3-22-26](https://github.com/timothysweitzerautomations-sketch/Sweitzer-Automations-3-22-26)
 
-This directory is the **full** project: `main.py`, `config/`, `tools/`, `revenue_pulse/`, and git history.
+This directory is the **full** project: `main.py`, `config/`, `tools/`, `revenue_pulse/`, `resume_builder/`, and git history.
 
 **CI (GitHub Actions):** on push/PR to `main` or `master`, [`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs:
 
@@ -20,7 +20,7 @@ This directory is the **full** project: `main.py`, `config/`, `tools/`, `revenue
 
 **Local (optional):** `bash scripts/verify_local_platforms.sh` — runs `demo_video_ready.sh` plus Android/Xcode **only if** the Android SDK and full **Xcode** (not only Command Line Tools) are installed. Windows `.exe` still needs a Windows machine or CI.
 
-**Platform dashboards (same UI as the browser):** **`windows/`** (build a `.exe` via [`windows_app/README_BUILD.md`](windows_app/README_BUILD.md)), **`android/`** (Gradle / Android Studio), **`apple/`** (Xcode — Mac, iPhone, iPad), **`linux/`** ([LINUX.md](LINUX.md) — Tk launcher or browser-only server), **`chrome_extension/`** ([CHROME.md](CHROME.md) — bundled dashboards in Chrome). Batch and shell helpers: [WINDOWS.md](WINDOWS.md), `scripts/windows/*.bat`.
+**Platform apps:** **`android/`** now packages the on-device AI Resume Builder for Play testing. **`windows/`**, **`apple/`**, **`linux/`**, and **`chrome_extension/`** still wrap the original dashboard workflows unless updated separately. Batch and shell helpers: [WINDOWS.md](WINDOWS.md), `scripts/windows/*.bat`.
 
 **macOS setup (optional):** from the repo root, run **`bash scripts/setup_platform_apps.sh`** — creates Desktop aliases **`Sweitzer Automations 3-22-26 - Project`** (whole repo), **`… - Windows`**, **`… - Android`**, **`… - Apple`**, regenerates shared launcher icons (`tools/generate_brand_icons.py`), and writes **`android/local.properties`** if `~/Library/Android/sdk` exists. Re-run after moving the project folder.
 
@@ -113,21 +113,21 @@ CSV expectations: header row; a column the app can treat as **transaction amount
 
 ## 4. AI Resume Builder
 
-Local-first resume coaching app with a browser UI, stdlib Python API server, and optional Ollama rewrite pass.
+On-device-only resume coaching app with a static browser/Android UI. The initial mobile path avoids hosted AI costs and keeps resume text on the user's device.
 
-- **Run the app:**
+- **Run the desktop preview:**
 
   ```bash
   python3 -m resume_builder.server
   ```
 
-  Open `http://127.0.0.1:8090`.
+  Open `http://127.0.0.1:8090`. The server only serves static files; resume analysis runs in browser JavaScript.
 
-- **Optional local AI:** start Ollama separately. The server calls `http://127.0.0.1:11434/api/generate` using `RESUME_BUILDER_MODEL` (or `OLLAMA_MODEL`) when available. If Ollama is unavailable, the deterministic resume engine still returns a readiness score, keyword gaps, suggested bullet rewrites, and a reusable AI prompt.
-- **Disable AI calls:** `RESUME_BUILDER_DISABLE_OLLAMA=1 python3 -m resume_builder.server`
-- **Google Play planning:** see [`docs/google_play_resume_builder.md`](docs/google_play_resume_builder.md) before packaging this as a Play Console app. The current Android wrapper does not yet package the resume builder, and Play Data safety answers depend on whether resume text stays on-device or is sent to a hosted AI backend.
-- **Core logic:** `resume_builder/resume_engine.py`
-- **UI/server:** `resume_builder/index.html`, `resume_builder/server.py`
+- **Android / Google Play:** `android/` packages `resume_builder/index.html` and `resume_builder/app.js` into a WebView app with application ID `com.sweitzer.resumebuilder` and no Internet permission.
+- **Privacy posture:** resume text, job descriptions, and suggestions are processed on-device only in this MVP. If hosted AI, analytics, ads, or crash reporting are added later, update the privacy policy and Play Data safety answers first.
+- **Google Play planning:** see [`docs/google_play_resume_builder.md`](docs/google_play_resume_builder.md).
+- **Core logic:** `resume_builder/resume_engine.py` for Python-tested behavior and `resume_builder/app.js` for the shipped on-device UI.
+- **UI/server:** `resume_builder/index.html`, `resume_builder/app.js`, `resume_builder/server.py`
 
 ## Automated tests (pytest)
 

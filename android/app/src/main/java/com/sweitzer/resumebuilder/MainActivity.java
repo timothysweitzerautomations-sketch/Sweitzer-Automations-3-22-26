@@ -1,4 +1,4 @@
-package com.sweitzer.automations;
+package com.sweitzer.resumebuilder;
 
 import android.annotation.SuppressLint;
 import android.net.Uri;
@@ -14,8 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.webkit.WebViewAssetLoader;
 
 /**
- * Bundled Revenue Pulse + Flip tracker (revenue_pulse/) in assets.
- * WebViewAssetLoader serves them under https://appassets.androidplatform.net/… so fetch() works for sample CSVs.
+ * Bundled on-device resume builder in assets.
+ * WebViewAssetLoader serves it under https://appassets.androidplatform.net/ so the
+ * WebView can load local JavaScript without network access.
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                         return getAssetLoader().shouldInterceptRequest(url);
                     }
                 });
-        webView.loadUrl("https://appassets.androidplatform.net/assets/revenue_pulse/index.html");
+        webView.loadUrl("https://appassets.androidplatform.net/assets/resume_builder/index.html");
     }
 
     @Override

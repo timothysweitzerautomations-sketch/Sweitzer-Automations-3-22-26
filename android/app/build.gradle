@@ -4,22 +4,25 @@ plugins {
 
 def repoRoot = rootProject.projectDir.parentFile
 
-tasks.register("copyRevenuePulseAssets", Copy) {
-    from(new File(repoRoot, "revenue_pulse"))
-    into(file("$projectDir/src/main/assets/revenue_pulse"))
+tasks.register("copyResumeBuilderAssets", Copy) {
+    from(new File(repoRoot, "resume_builder")) {
+        include "index.html"
+        include "app.js"
+    }
+    into(file("$projectDir/src/main/assets/resume_builder"))
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 tasks.named("preBuild").configure {
-    dependsOn(tasks.named("copyRevenuePulseAssets"))
+    dependsOn(tasks.named("copyResumeBuilderAssets"))
 }
 
 android {
-    namespace "com.sweitzer.automations"
+    namespace "com.sweitzer.resumebuilder"
     compileSdk 35
 
     defaultConfig {
-        applicationId "com.sweitzer.automations"
+        applicationId "com.sweitzer.resumebuilder"
         minSdk 26
         targetSdk 35
         versionCode 1
