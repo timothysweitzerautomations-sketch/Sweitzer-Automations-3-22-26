@@ -32,7 +32,7 @@ This directory is the **full** project: `main.py`, `config/`, `tools/`, `revenue
 | Android | `android/README.txt` — `./gradlew assembleDebug` or Android Studio |
 | Mac / iPhone / iPad | `apple/README.txt` — `SweitzerAutomations.xcodeproj` |
 
-Two capabilities live in this repo:
+Four capabilities live in this repo:
 
 ## 1. CrewAI resale / arbitrage workflow
 
@@ -111,6 +111,23 @@ CSV expectations: header row; a column the app can treat as **transaction amount
 
 **Not tax or legal advice.** General inventory / overhead lines (not per-sale) are still outside this file — only **per-line sale** economics here.
 
+## 4. AI Resume Builder
+
+Local-first resume coaching app with a browser UI, stdlib Python API server, and optional Ollama rewrite pass.
+
+- **Run the app:**
+
+  ```bash
+  python3 -m resume_builder.server
+  ```
+
+  Open `http://127.0.0.1:8090`.
+
+- **Optional local AI:** start Ollama separately. The server calls `http://127.0.0.1:11434/api/generate` using `RESUME_BUILDER_MODEL` (or `OLLAMA_MODEL`) when available. If Ollama is unavailable, the deterministic resume engine still returns a readiness score, keyword gaps, suggested bullet rewrites, and a reusable AI prompt.
+- **Disable AI calls:** `RESUME_BUILDER_DISABLE_OLLAMA=1 python3 -m resume_builder.server`
+- **Core logic:** `resume_builder/resume_engine.py`
+- **UI/server:** `resume_builder/index.html`, `resume_builder/server.py`
+
 ## Automated tests (pytest)
 
 From the project root, with dev deps installed:
@@ -124,6 +141,7 @@ pytest tests/ -v
 - `tests/test_revenue_engine.py` — `sample_sales.csv`
 - `tests/test_flip_engine.py` — `sample_flips.csv`
 - `tests/test_flip_ledger_tool.py` — CrewAI `flip_csv_summary` (skipped if `crewai` missing)
+- `tests/test_resume_engine.py` — AI Resume Builder scoring, keyword gaps, and prompt safety
 
 Add new files under `tests/` following the same pattern.
 
@@ -145,6 +163,7 @@ Add new files under `tests/` following the same pattern.
 - `config/` — `agents.yaml`, `tasks.yaml`
 - `tools/` — `custom_tool.py`, `revenue_analytics.py`, `flip_ledger.py`
 - `revenue_pulse/` — `index.html` / `index.js`, `flip_tracker.html` / `flip_tracker.js`, `vendor/chart.umd.min.js`, `revenue_engine.py`, `flip_engine.py`, sample CSVs
+- `resume_builder/` — local AI resume coach (`server.py`, `resume_engine.py`, `index.html`)
 - `tests/` — pytest suite; `requirements-dev.txt` — pytest only
 - `docs/video/` — demo recording prep, Gemini handoff text, talking-point cue cards
 - `linux/` — [LINUX.md](LINUX.md) user-friendly dashboard launchers
