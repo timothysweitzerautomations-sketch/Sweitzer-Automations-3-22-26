@@ -26,6 +26,10 @@ document.getElementById("btnFlip").addEventListener("click", () => {
   openUrl("/flip_tracker.html");
 });
 
+document.getElementById("btnVideo").addEventListener("click", () => {
+  openUrl("/video_player.html");
+});
+
 document.getElementById("linkOptions").addEventListener("click", (e) => {
   e.preventDefault();
   chrome.runtime.openOptionsPage();

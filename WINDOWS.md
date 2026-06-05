@@ -10,7 +10,7 @@ Build a **double-click installer-style app** (no terminal) that opens a small wi
 2. Follow **`windows_app/README_BUILD.md`** — one PyInstaller command produces `dist\SweitzerAutomations-3-22-26.exe`.
 3. Zip that file (or your whole `dist` folder) and share it for download.
 
-End users only run the `.exe` (they may need to allow it past SmartScreen the first time). The app window also has **View flip sample (JSON)** and **View revenue sample (JSON)** with optional **Save as…** — no command line needed.
+End users only run the `.exe` (they may need to allow it past SmartScreen the first time). The app window opens Revenue Pulse, Flip profit tracker, and the Infotainment video player. It also has **View flip sample (JSON)** and **View revenue sample (JSON)** with optional **Save as…** — no command line needed.
 
 ---
 
@@ -35,7 +35,7 @@ py --version
 
 The scripts below try `py -3` first, then `python`.
 
-## 2. Dashboard (Revenue Pulse + Flip tracker)
+## 2. Dashboard (Revenue Pulse + Flip tracker + Video player)
 
 Double-click:
 
@@ -52,8 +52,9 @@ Then in your browser:
 
 - [http://localhost:8080/index.html](http://localhost:8080/index.html) — Revenue Pulse  
 - [http://localhost:8080/flip_tracker.html](http://localhost:8080/flip_tracker.html) — Flip profit tracker  
+- [http://localhost:8080/video_player.html](http://localhost:8080/video_player.html) — Infotainment video player
 
-Use **Load sample data** / **Load sample flips**, or upload your own CSV.
+Use **Load sample data** / **Load sample flips**, upload your own CSV, or choose local videos in the player.
 
 ## 3. Command-line JSON (optional)
 

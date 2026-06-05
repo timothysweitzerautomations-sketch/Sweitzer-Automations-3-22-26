@@ -1,10 +1,10 @@
 # Running on Linux
 
-Copy or clone the **Sweitzer Automations 3-22-26** project. Same dashboards as Windows and macOS: **Revenue Pulse** and **Flip profit tracker** in `revenue_pulse/`.
+Copy or clone the **Sweitzer Automations 3-22-26** project. Same UI as Windows and macOS: **Revenue Pulse**, **Flip profit tracker**, and **Infotainment video player** in `revenue_pulse/`.
 
 ## Option A — Desktop launcher (recommended, matches Windows)
 
-Uses the same **Python + Tk** window as the Windows app (`windows_app/launcher.py`): buttons open the dashboards in your browser and show sample JSON.
+Uses the same **Python + Tk** window as the Windows app (`windows_app/launcher.py`): buttons open the dashboards/video player in your browser and show sample JSON.
 
 ### 1. Install Python and Tk
 
@@ -53,7 +53,7 @@ chmod +x linux/serve_dashboards.sh
 ./linux/serve_dashboards.sh
 ```
 
-Default URL: **http://127.0.0.1:8765/** — flip tracker: **http://127.0.0.1:8765/flip_tracker.html**
+Default URL: **http://127.0.0.1:8765/** — flip tracker: **http://127.0.0.1:8765/flip_tracker.html** — video player: **http://127.0.0.1:8765/video_player.html**
 
 Another port:
 

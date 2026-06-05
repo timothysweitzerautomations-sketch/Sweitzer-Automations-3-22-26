@@ -199,7 +199,7 @@ def main() -> None:
 
     ttk.Label(
         frm,
-        text="Revenue Pulse & Flip tracker",
+        text="Revenue Pulse, Flip tracker & Video player",
         font=("Segoe UI", 14, "bold"),
     ).pack(anchor=tk.W, **pad)
     ttk.Label(
@@ -215,6 +215,9 @@ def main() -> None:
         fill=tk.X, pady=4
     )
     ttk.Button(bf, text="Open Flip profit tracker", command=lambda: open_url("/flip_tracker.html")).pack(
+        fill=tk.X, pady=4
+    )
+    ttk.Button(bf, text="Open Infotainment video player", command=lambda: open_url("/video_player.html")).pack(
         fill=tk.X, pady=4
     )
 

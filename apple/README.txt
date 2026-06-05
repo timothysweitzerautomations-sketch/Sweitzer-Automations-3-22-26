@@ -1,7 +1,8 @@
 Sweitzer Automations 3-22-26 — Mac & iPhone / iPad
 ==========================================
 
-This folder contains an **Xcode** project that wraps the same **Revenue Pulse** and **Flip profit tracker**
+This folder contains an **Xcode** project that wraps the same **Revenue Pulse**, **Flip profit tracker**,
+and **Infotainment video player**
 HTML dashboards as the Windows and Android apps (`revenue_pulse/`).
 
 What it does
@@ -12,6 +13,7 @@ What it does
 - A **WKWebView** loads `app://localhost/revenue_pulse/index.html`.
 - **`AppSchemeHandler`** (custom `WKURLSchemeHandler`) serves those files under the `app` scheme so
   relative links and `fetch()` for sample CSVs work (same idea as Android’s WebViewAssetLoader).
+- The video player enables inline media playback and supports local/URL video sources that WebKit can decode.
 - Chart.js loads from the CDN — the app needs **network access** for charts (allowed by default for HTTPS).
 
 Open in Xcode
@@ -52,7 +54,7 @@ What’s not included
 -------------------
 
 Like the Android app, this does **not** include the Windows/Python **JSON sample report** windows —
-only the web dashboards in the web view.
+only the web dashboards and video player in the web view.
 
 Desktop shortcut
 ----------------

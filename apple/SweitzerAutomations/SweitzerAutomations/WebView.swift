@@ -15,6 +15,8 @@ struct WebView: UIViewRepresentable {
 
     private func makeWebView() -> WKWebView {
         let config = WKWebViewConfiguration()
+        config.allowsInlineMediaPlayback = true
+        config.mediaTypesRequiringUserActionForPlayback = []
         config.setURLSchemeHandler(AppSchemeHandler(), forURLScheme: "app")
         let webView = WKWebView(frame: .zero, configuration: config)
         webView.load(URLRequest(url: url))
@@ -36,6 +38,7 @@ struct WebView: NSViewRepresentable {
 
     private func makeWebView() -> WKWebView {
         let config = WKWebViewConfiguration()
+        config.mediaTypesRequiringUserActionForPlayback = []
         config.setURLSchemeHandler(AppSchemeHandler(), forURLScheme: "app")
         let webView = WKWebView(frame: .zero, configuration: config)
         webView.load(URLRequest(url: url))
