@@ -6,7 +6,7 @@
 
 **GitHub (public source of truth):** [github.com/timothysweitzerautomations-sketch/Sweitzer-Automations-3-22-26](https://github.com/timothysweitzerautomations-sketch/Sweitzer-Automations-3-22-26)
 
-This directory is the **full** project: `main.py`, `config/`, `tools/`, `revenue_pulse/`, and git history.
+This directory is the **full** project: `main.py`, `config/`, `tools/`, `revenue_pulse/`, `resume_builder/`, and git history.
 
 **CI (GitHub Actions):** on push/PR to `main` or `master`, [`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs:
 
@@ -20,7 +20,7 @@ This directory is the **full** project: `main.py`, `config/`, `tools/`, `revenue
 
 **Local (optional):** `bash scripts/verify_local_platforms.sh` — runs `demo_video_ready.sh` plus Android/Xcode **only if** the Android SDK and full **Xcode** (not only Command Line Tools) are installed. Windows `.exe` still needs a Windows machine or CI.
 
-**Platform dashboards (same UI as the browser):** **`windows/`** (build a `.exe` via [`windows_app/README_BUILD.md`](windows_app/README_BUILD.md)), **`android/`** (Gradle / Android Studio), **`apple/`** (Xcode — Mac, iPhone, iPad), **`linux/`** ([LINUX.md](LINUX.md) — Tk launcher or browser-only server), **`chrome_extension/`** ([CHROME.md](CHROME.md) — bundled dashboards in Chrome). Batch and shell helpers: [WINDOWS.md](WINDOWS.md), `scripts/windows/*.bat`.
+**Platform apps:** **`android/`** now packages the on-device AI Resume Builder for Play testing. **`windows/`**, **`apple/`**, **`linux/`**, and **`chrome_extension/`** still wrap the original dashboard workflows unless updated separately. Batch and shell helpers: [WINDOWS.md](WINDOWS.md), `scripts/windows/*.bat`.
 
 **macOS setup (optional):** from the repo root, run **`bash scripts/setup_platform_apps.sh`** — creates Desktop aliases **`Sweitzer Automations 3-22-26 - Project`** (whole repo), **`… - Windows`**, **`… - Android`**, **`… - Apple`**, regenerates shared launcher icons (`tools/generate_brand_icons.py`), and writes **`android/local.properties`** if `~/Library/Android/sdk` exists. Re-run after moving the project folder.
 
@@ -32,7 +32,7 @@ This directory is the **full** project: `main.py`, `config/`, `tools/`, `revenue
 | Android | `android/README.txt` — `./gradlew assembleDebug` or Android Studio |
 | Mac / iPhone / iPad | `apple/README.txt` — `SweitzerAutomations.xcodeproj` |
 
-Two capabilities live in this repo:
+Four capabilities live in this repo:
 
 ## 1. CrewAI resale / arbitrage workflow
 
@@ -111,6 +111,24 @@ CSV expectations: header row; a column the app can treat as **transaction amount
 
 **Not tax or legal advice.** General inventory / overhead lines (not per-sale) are still outside this file — only **per-line sale** economics here.
 
+## 4. AI Resume Builder
+
+On-device-only resume coaching app with a static browser/Android UI. The initial mobile path avoids hosted AI costs and keeps resume text on the user's device.
+
+- **Run the desktop preview:**
+
+  ```bash
+  python3 -m resume_builder.server
+  ```
+
+  Open `http://127.0.0.1:8090`. The server only serves static files; resume analysis runs in browser JavaScript.
+
+- **Android / Google Play:** `android/` packages `resume_builder/index.html` and `resume_builder/app.js` into a WebView app with application ID `com.sweitzer.resumebuilder` and no Internet permission.
+- **Privacy posture:** resume text, job descriptions, and suggestions are processed on-device only in this MVP. If hosted AI, analytics, ads, or crash reporting are added later, update the privacy policy and Play Data safety answers first.
+- **Google Play planning:** see [`docs/google_play_resume_builder.md`](docs/google_play_resume_builder.md).
+- **Core logic:** `resume_builder/resume_engine.py` for Python-tested behavior and `resume_builder/app.js` for the shipped on-device UI.
+- **UI/server:** `resume_builder/index.html`, `resume_builder/app.js`, `resume_builder/server.py`
+
 ## Automated tests (pytest)
 
 From the project root, with dev deps installed:
@@ -124,6 +142,7 @@ pytest tests/ -v
 - `tests/test_revenue_engine.py` — `sample_sales.csv`
 - `tests/test_flip_engine.py` — `sample_flips.csv`
 - `tests/test_flip_ledger_tool.py` — CrewAI `flip_csv_summary` (skipped if `crewai` missing)
+- `tests/test_resume_engine.py` — AI Resume Builder scoring, keyword gaps, and prompt safety
 
 Add new files under `tests/` following the same pattern.
 
@@ -145,6 +164,7 @@ Add new files under `tests/` following the same pattern.
 - `config/` — `agents.yaml`, `tasks.yaml`
 - `tools/` — `custom_tool.py`, `revenue_analytics.py`, `flip_ledger.py`
 - `revenue_pulse/` — `index.html` / `index.js`, `flip_tracker.html` / `flip_tracker.js`, `vendor/chart.umd.min.js`, `revenue_engine.py`, `flip_engine.py`, sample CSVs
+- `resume_builder/` — local AI resume coach (`server.py`, `resume_engine.py`, `index.html`)
 - `tests/` — pytest suite; `requirements-dev.txt` — pytest only
 - `docs/video/` — demo recording prep, Gemini handoff text, talking-point cue cards
 - `linux/` — [LINUX.md](LINUX.md) user-friendly dashboard launchers
